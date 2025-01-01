@@ -1,0 +1,105 @@
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+  images: {
+    unoptimized: true,
+    domains: ['localhost', '127.0.0.1'],
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '8080',
+        pathname: '/images/**',
+      },
+      {
+        protocol: 'http',
+        hostname: '127.0.0.1',
+        port: '8080',
+        pathname: '/images/**',
+      }
+    ],
+  },
+  webpack: (config, { isServer }) => {
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      canvas: false,
+    };
+
+    config.module.rules.push(
+      {
+        test: /pdf\.worker\.(min\.)?js/,
+        type: 'asset/resource',
+        generator: {
+          filename: 'static/[hash][ext][query]'
+        }
+      },
+      {
+        test: /\.(pdf|mp4|mp3)$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: 'static/media/[hash][ext][query]',
+          publicPath: '/_next/static/media/',
+        }
+      }
+    );
+
+    return config;
+  },
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/pdfs/:path*',
+        headers: [
+          {
+            key: 'Content-Type',
+            value: 'application/pdf'
+          },
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          }
+        ]
+      },
+      {
+        source: '/videos/:path*',
+        headers: [
+          {
+            key: 'Content-Type',
+            value: 'video/mp4'
+          },
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          }
+        ]
+      },
+      {
+        source: '/audio/:path*',
+        headers: [
+          {
+            key: 'Content-Type',
+            value: 'audio/mpeg'
+          },
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          }
+        ]
+      }
+    ];
+  },
+  poweredByHeader: false,
+  compress: true,
+  generateEtags: true,
+}
+
+module.exports = nextConfig 
