@@ -16,6 +16,7 @@ const nextConfig = {
   reactStrictMode: true,
   output: 'standalone',
   distDir: '.next',
+  assetPrefix: '.',
   images: {
     unoptimized: true,
     domains: ['localhost', '127.0.0.1', 'unpkg.com', 'cdnjs.cloudflare.com'],
@@ -60,29 +61,41 @@ const nextConfig = {
       };
     }
 
+    // Handle static files
     config.module.rules.push({
       test: /\.(pdf|mp4|mp3)$/i,
       type: 'asset/resource',
       generator: {
         filename: 'static/media/[name].[hash][ext]',
+        publicPath: '/_next/',
       }
     });
 
     return config;
   },
+  // Ensure static files are copied to the output directory
+  experimental: {
+    outputFileTracingRoot: __dirname,
+    outputFileTracingIncludes: {
+      '/**': [
+        './public/**/*',
+        '.next/static/**/*'
+      ]
+    }
+  },
   async rewrites() {
     return [
       {
         source: '/pdfs/:path*',
-        destination: '/_next/static/media/:path*'
+        destination: '/public/pdfs/:path*'
       },
       {
         source: '/videos/:path*',
-        destination: '/_next/static/media/:path*'
+        destination: '/public/videos/:path*'
       },
       {
         source: '/audio/:path*',
-        destination: '/_next/static/media/:path*'
+        destination: '/public/audio/:path*'
       }
     ];
   },
@@ -109,7 +122,7 @@ const nextConfig = {
         ],
       },
       {
-        source: '/_next/static/media/:path*',
+        source: '/public/:path*',
         headers: [
           {
             key: 'Content-Type',
