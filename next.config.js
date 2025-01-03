@@ -16,7 +16,7 @@ const nextConfig = {
   reactStrictMode: true,
   images: {
     unoptimized: true,
-    domains: ['localhost', '127.0.0.1', 'unpkg.com'],
+    domains: ['localhost', '127.0.0.1', 'unpkg.com', 'cdnjs.cloudflare.com'],
     remotePatterns: [
       {
         protocol: 'http',
@@ -34,6 +34,11 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'unpkg.com',
         pathname: '/pdfjs-dist/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdnjs.cloudflare.com',
+        pathname: '/ajax/libs/**',
       }
     ],
   },
@@ -46,12 +51,18 @@ const nextConfig = {
       crypto: false,
     };
 
+    if (!isServer) {
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        'pdfjs-dist': require.resolve('pdfjs-dist/legacy/build/pdf'),
+      };
+    }
+
     config.module.rules.push({
       test: /\.(pdf|mp4|mp3)$/i,
       type: 'asset/resource',
       generator: {
         filename: 'static/media/[name].[hash][ext]',
-        publicPath: '/_next/',
       }
     });
 
@@ -66,15 +77,15 @@ const nextConfig = {
             key: 'Content-Security-Policy',
             value: `
               default-src 'self';
-              script-src 'self' 'unsafe-inline' https://unpkg.com;
+              script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://cdnjs.cloudflare.com;
               style-src 'self' 'unsafe-inline';
-              img-src 'self' data: blob:;
-              media-src 'self' blob:;
-              connect-src 'self' https://unpkg.com;
-              font-src 'self';
+              img-src 'self' data: blob: https:;
+              media-src 'self' blob: data:;
+              connect-src 'self' https://unpkg.com https://cdnjs.cloudflare.com;
+              font-src 'self' data:;
               frame-src 'self';
-              object-src 'none';
-              worker-src 'self' blob:;
+              object-src 'self' blob:;
+              worker-src 'self' blob: https://unpkg.com https://cdnjs.cloudflare.com;
             `.replace(/\n/g, '')
           },
           {
@@ -91,6 +102,10 @@ const nextConfig = {
             value: 'application/pdf'
           },
           {
+            key: 'Content-Security-Policy',
+            value: "default-src 'self' blob:; object-src 'self' blob:;"
+          },
+          {
             key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable',
           }
@@ -104,6 +119,10 @@ const nextConfig = {
             value: 'video/mp4'
           },
           {
+            key: 'Content-Security-Policy',
+            value: "default-src 'self' blob:; media-src 'self' blob:;"
+          },
+          {
             key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable',
           }
@@ -115,6 +134,10 @@ const nextConfig = {
           {
             key: 'Content-Type',
             value: 'audio/mpeg'
+          },
+          {
+            key: 'Content-Security-Policy',
+            value: "default-src 'self' blob:; media-src 'self' blob:;"
           },
           {
             key: 'Cache-Control',
