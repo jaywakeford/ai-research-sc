@@ -14,6 +14,7 @@ const nextConfig = {
   },
   // Other Next.js configurations
   reactStrictMode: true,
+  output: 'standalone',
   images: {
     unoptimized: true,
     domains: ['localhost', '127.0.0.1', 'unpkg.com', 'cdnjs.cloudflare.com'],
@@ -63,6 +64,7 @@ const nextConfig = {
       type: 'asset/resource',
       generator: {
         filename: 'static/media/[name].[hash][ext]',
+        publicPath: '/_next/',
       }
     });
 
@@ -79,19 +81,15 @@ const nextConfig = {
               default-src 'self';
               script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://cdnjs.cloudflare.com;
               style-src 'self' 'unsafe-inline';
-              img-src 'self' data: blob: https:;
-              media-src 'self' blob: data:;
+              img-src 'self' data: blob: https: http:;
+              media-src 'self' blob: data: https: http:;
               connect-src 'self' https://unpkg.com https://cdnjs.cloudflare.com;
               font-src 'self' data:;
               frame-src 'self';
-              object-src 'self' blob:;
+              object-src 'self' blob: data:;
               worker-src 'self' blob: https://unpkg.com https://cdnjs.cloudflare.com;
-            `.replace(/\n/g, '')
-          },
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
+            `.replace(/\n/g, '').replace(/\s+/g, ' ').trim()
+          }
         ],
       },
       {
@@ -102,8 +100,8 @@ const nextConfig = {
             value: 'application/pdf'
           },
           {
-            key: 'Content-Security-Policy',
-            value: "default-src 'self' blob:; object-src 'self' blob:;"
+            key: 'Content-Disposition',
+            value: 'inline'
           },
           {
             key: 'Cache-Control',
@@ -119,8 +117,8 @@ const nextConfig = {
             value: 'video/mp4'
           },
           {
-            key: 'Content-Security-Policy',
-            value: "default-src 'self' blob:; media-src 'self' blob:;"
+            key: 'Accept-Ranges',
+            value: 'bytes'
           },
           {
             key: 'Cache-Control',
@@ -136,8 +134,8 @@ const nextConfig = {
             value: 'audio/mpeg'
           },
           {
-            key: 'Content-Security-Policy',
-            value: "default-src 'self' blob:; media-src 'self' blob:;"
+            key: 'Accept-Ranges',
+            value: 'bytes'
           },
           {
             key: 'Cache-Control',
