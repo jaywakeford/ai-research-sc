@@ -1,23 +1,7 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/next"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/pdfs/(.*)",
-      "dest": "/public/pdfs/$1"
-    },
-    {
-      "src": "/videos/(.*)",
-      "dest": "/public/videos/$1"
-    },
-    {
-      "src": "/audio/(.*)",
-      "dest": "/public/audio/$1"
-    }
-  ]
+  "buildCommand": "next build",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "outputDirectory": ".next"
 } 
