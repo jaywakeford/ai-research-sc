@@ -7,7 +7,7 @@ import AudioPlayer from '@/components/AudioPlayer';
 const videos = [
   {
     title: 'Colleague to Colleague Deep Analytics',
-    videoUrl: '/videos/colleague_to_colleague_deep_analytics.mp4',
+    videoUrl: '/videos/colleague-to-colleague-deep-analytics.mp4',
     description: 'Advanced analytics platform facilitating peer-to-peer collaboration and deep insights sharing.',
     technologies: ['Analytics', 'Collaboration', 'Data Visualization'],
     metrics: [
@@ -18,7 +18,7 @@ const videos = [
   },
   {
     title: 'Bottom-Up Task Management System',
-    videoUrl: '/videos/bottomup_task_management_system.mp4',
+    videoUrl: '/videos/bottomup-task-management-system.mp4',
     description: 'Innovative task management system empowering teams through data-driven decision making and autonomous workflows.',
     technologies: ['Task Analysis', 'Process Automation', 'Team Empowerment'],
     metrics: [
@@ -29,7 +29,7 @@ const videos = [
   },
   {
     title: 'Balanced Scorecard Analytics',
-    videoUrl: '/videos/balanced_scorecard.mp4',
+    videoUrl: '/videos/balanced-scorecard.mp4',
     description: 'Advanced performance metrics and KPI visualization system for supply chain optimization.',
     technologies: ['Power BI', 'DAX', 'SQL'],
     metrics: [
@@ -40,8 +40,8 @@ const videos = [
   },
   {
     title: 'Last Mile Delivery Intelligence',
-    videoUrl: '/videos/lmd_uat_sit_pbi.mp4',
-    audioUrl: '/audio/lmd_sop_pod.mp3',
+    videoUrl: '/videos/lmd-uat-sit-pbi.mp4',
+    audioUrl: '/audio/lmd-sop-pod.mp3',
     description: 'Real-time delivery tracking and optimization platform with predictive analytics.',
     technologies: ['Power BI', 'Python', 'Machine Learning', 'GPS Integration'],
     metrics: [
@@ -52,7 +52,7 @@ const videos = [
   },
   {
     title: 'Opportunity Gaps Automation',
-    videoUrl: '/videos/opportunity_gaps_automation.mp4',
+    videoUrl: '/videos/opportunity-gaps-automation.mp4',
     description: 'AI-driven system for identifying and analyzing supply chain optimization opportunities.',
     technologies: ['AI/ML', 'Python', 'Tableau', 'Big Data'],
     metrics: [
@@ -63,7 +63,7 @@ const videos = [
   },
   {
     title: 'Real-Time Analytics Dashboard',
-    videoUrl: '/videos/reporting__insights_rapid_demo.mp4',
+    videoUrl: '/videos/reporting-insights-rapid-demo.mp4',
     description: 'Dynamic reporting system with real-time insights and predictive analytics.',
     technologies: ['Power BI', 'SQL', 'Real-time Analytics'],
     metrics: [
