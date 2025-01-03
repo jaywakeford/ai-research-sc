@@ -14,6 +14,7 @@ interface PdfViewerProps {
 
 const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
   const [numPages, setNumPages] = useState<number>(0);
+  const [pageNumber, setPageNumber] = useState<number>(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -29,14 +30,15 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
     setLoading(false);
   }
 
-  const handleRetry = () => {
-    setLoading(true);
-    setError(null);
-    // Force remount of Document component
-    const timestamp = new Date().getTime();
-    const urlWithTimestamp = `${pdfUrl}?t=${timestamp}`;
-    return urlWithTimestamp;
+  const changePage = (offset: number) => {
+    setPageNumber(prevPageNumber => {
+      const newPageNumber = prevPageNumber + offset;
+      return Math.min(Math.max(1, newPageNumber), numPages);
+    });
   };
+
+  const previousPage = () => changePage(-1);
+  const nextPage = () => changePage(1);
 
   return (
     <div className="relative w-full bg-gray-50 dark:bg-gray-800 rounded-lg overflow-hidden p-4 shadow-lg border border-gray-200 dark:border-gray-700">
@@ -50,7 +52,10 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
         <div className="text-red-600 dark:text-red-400 text-center p-4">
           <p>{error}</p>
           <button 
-            onClick={() => handleRetry()} 
+            onClick={() => {
+              setLoading(true);
+              setError(null);
+            }} 
             className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
           >
             Retry
@@ -70,42 +75,40 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
                 <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-600"></div>
               </div>
             }
-            error={
-              <div></div> // Empty div as placeholder, we handle errors ourselves
-            }
-            options={{
-              cMapUrl: 'https://unpkg.com/pdfjs-dist@3.4.120/cmaps/',
-              cMapPacked: true,
-              standardFontDataUrl: 'https://unpkg.com/pdfjs-dist@3.4.120/standard_fonts/'
-            }}
           >
-            {Array.from(new Array(numPages), (el, index) => (
-              <Page
-                key={`page_${index + 1}`}
-                pageNumber={index + 1}
-                renderTextLayer={true}
-                renderAnnotationLayer={true}
-                className="mb-4 shadow-md"
-                loading={
-                  <div className="flex justify-center items-center p-4">
-                    <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-600"></div>
-                  </div>
-                }
-                error={
-                  <div className="text-red-600 dark:text-red-400 text-center p-4">
-                    Failed to load page {index + 1}. Please try refreshing.
-                  </div>
-                }
-              />
-            ))}
+            <Page
+              pageNumber={pageNumber}
+              renderTextLayer={true}
+              renderAnnotationLayer={true}
+              className="mb-4 shadow-md"
+              loading={
+                <div className="flex justify-center items-center p-4">
+                  <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-600"></div>
+                </div>
+              }
+            />
           </Document>
         </div>
 
         {!loading && !error && numPages > 0 && (
           <div className="flex items-center gap-4 mt-4 sticky bottom-4 bg-white dark:bg-gray-800 px-6 py-3 rounded-full shadow-lg border border-gray-200 dark:border-gray-700">
+            <button
+              onClick={previousPage}
+              disabled={pageNumber <= 1}
+              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Previous
+            </button>
             <p className="text-gray-700 dark:text-gray-200">
-              {numPages} pages
+              Page {pageNumber} of {numPages}
             </p>
+            <button
+              onClick={nextPage}
+              disabled={pageNumber >= numPages}
+              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Next
+            </button>
           </div>
         )}
       </div>

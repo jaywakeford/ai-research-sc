@@ -1,5 +1,18 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  env: {
+    // Proxy bypass settings
+    HTTP_PROXY: '',
+    HTTPS_PROXY: '',
+    NO_PROXY: 'localhost,127.0.0.1',
+    // Set default port
+    PORT: process.env.PORT || '9876'
+  },
+  // Ensure consistent server settings
+  serverRuntimeConfig: {
+    PROJECT_ROOT: __dirname,
+  },
+  // Other Next.js configurations
   reactStrictMode: true,
   images: {
     unoptimized: true,

@@ -24,23 +24,55 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
 
   useEffect(() => {
     if (videoRef.current) {
-      videoRef.current.addEventListener('loadeddata', () => {
+      const video = videoRef.current;
+
+      const handleLoadedData = () => {
         setLoading(false);
-      });
-      videoRef.current.addEventListener('error', (e) => {
-        console.error('Error loading video:', e);
+        setError(null);
+      };
+
+      const handleError = () => {
+        console.error('Error loading video:', video.error);
         setError('Failed to load video. Please try refreshing the page.');
         setLoading(false);
-      });
+      };
+
+      const handleLoadStart = () => {
+        setLoading(true);
+      };
+
+      video.addEventListener('loadeddata', handleLoadedData);
+      video.addEventListener('error', handleError);
+      video.addEventListener('loadstart', handleLoadStart);
+
+      // Preload the video
+      video.preload = 'auto';
+
+      return () => {
+        video.removeEventListener('loadeddata', handleLoadedData);
+        video.removeEventListener('error', handleError);
+        video.removeEventListener('loadstart', handleLoadStart);
+      };
     }
-  }, []);
+  }, [videoUrl]);
 
   const handlePlayPause = () => {
     if (videoRef.current) {
       if (isPlaying) {
         videoRef.current.pause();
       } else {
-        videoRef.current.play();
+        // Add a play promise to handle autoplay restrictions
+        const playPromise = videoRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              setIsPlaying(true);
+            })
+            .catch(error => {
+              console.error("Error attempting to play video:", error);
+              setError('Unable to play video. Please try clicking again.');
+            });
+        }
       }
       setIsPlaying(!isPlaying);
     }
@@ -50,7 +82,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     if (videoRef.current) {
       setLoading(true);
       setError(null);
-      // Force video reload
+      // Force video reload with timestamp to bypass cache
+      const timestamp = new Date().getTime();
+      videoRef.current.src = `${videoUrl}?t=${timestamp}`;
       videoRef.current.load();
     }
   };
@@ -59,7 +93,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     <div className="w-full bg-gray-50 dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 mb-8">
       <div className="relative">
         {loading && (
-          <div className="absolute inset-0 flex items-center justify-center bg-gray-50 dark:bg-gray-800 bg-opacity-90">
+          <div className="absolute inset-0 flex items-center justify-center bg-gray-50 dark:bg-gray-800 bg-opacity-90 z-10">
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
           </div>
         )}
@@ -75,15 +109,31 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
             </button>
           </div>
         ) : (
-          <video
-            ref={videoRef}
-            className="w-full aspect-video"
-            onClick={handlePlayPause}
-            style={{ cursor: 'pointer' }}
-          >
-            <source src={videoUrl} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+          <div className="relative aspect-video">
+            <video
+              ref={videoRef}
+              className="w-full h-full object-cover"
+              onClick={handlePlayPause}
+              style={{ cursor: 'pointer' }}
+              playsInline
+              preload="auto"
+            >
+              <source src={videoUrl} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+            {!loading && !isPlaying && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <button
+                  onClick={handlePlayPause}
+                  className="p-4 rounded-full bg-blue-600 bg-opacity-75 hover:bg-opacity-100 transition-opacity"
+                >
+                  <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                  </svg>
+                </button>
+              </div>
+            )}
+          </div>
         )}
       </div>
 
