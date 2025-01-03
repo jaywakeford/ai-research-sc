@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+const path = require('path');
+
 const nextConfig = {
   reactStrictMode: true,
   output: 'standalone',
@@ -24,17 +26,11 @@ const nextConfig = {
 
     // Add rule for handling PDF, video, and audio files
     config.module.rules.push({
-      test: /\.(pdf|mp4|mp3)$/,
-      use: [
-        {
-          loader: 'file-loader',
-          options: {
-            name: '[path][name].[ext]',
-            publicPath: '/_next/static/media/',
-            outputPath: 'static/media/',
-          },
-        },
-      ],
+      test: /\.(pdf|mp4|mp3)$/i,
+      type: 'asset/resource',
+      generator: {
+        filename: 'static/media/[name][ext]',
+      },
     });
 
     return config;
@@ -43,15 +39,7 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/pdfs/:path*',
-        destination: '/static/media/:path*',
-      },
-      {
-        source: '/videos/:path*',
-        destination: '/static/media/:path*',
-      },
-      {
-        source: '/audio/:path*',
+        source: '/static/media/:path*',
         destination: '/static/media/:path*',
       },
     ];
@@ -81,10 +69,6 @@ const nextConfig = {
       {
         source: '/static/media/:path*',
         headers: [
-          {
-            key: 'Content-Type',
-            value: 'application/octet-stream'
-          },
           {
             key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable'
