@@ -15,6 +15,7 @@ const nextConfig = {
   // Other Next.js configurations
   reactStrictMode: true,
   output: 'standalone',
+  distDir: '.next',
   images: {
     unoptimized: true,
     domains: ['localhost', '127.0.0.1', 'unpkg.com', 'cdnjs.cloudflare.com'],
@@ -64,11 +65,26 @@ const nextConfig = {
       type: 'asset/resource',
       generator: {
         filename: 'static/media/[name].[hash][ext]',
-        publicPath: '/_next/',
       }
     });
 
     return config;
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/pdfs/:path*',
+        destination: '/_next/static/media/:path*'
+      },
+      {
+        source: '/videos/:path*',
+        destination: '/_next/static/media/:path*'
+      },
+      {
+        source: '/audio/:path*',
+        destination: '/_next/static/media/:path*'
+      }
+    ];
   },
   async headers() {
     return [
@@ -93,45 +109,15 @@ const nextConfig = {
         ],
       },
       {
-        source: '/pdfs/:path*',
+        source: '/_next/static/media/:path*',
         headers: [
           {
             key: 'Content-Type',
-            value: 'application/pdf'
+            value: 'application/octet-stream'
           },
           {
             key: 'Content-Disposition',
             value: 'inline'
-          },
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          }
-        ]
-      },
-      {
-        source: '/videos/:path*',
-        headers: [
-          {
-            key: 'Content-Type',
-            value: 'video/mp4'
-          },
-          {
-            key: 'Accept-Ranges',
-            value: 'bytes'
-          },
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          }
-        ]
-      },
-      {
-        source: '/audio/:path*',
-        headers: [
-          {
-            key: 'Content-Type',
-            value: 'audio/mpeg'
           },
           {
             key: 'Accept-Ranges',
