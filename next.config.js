@@ -16,7 +16,7 @@ const nextConfig = {
   reactStrictMode: true,
   images: {
     unoptimized: true,
-    domains: ['localhost', '127.0.0.1'],
+    domains: ['localhost', '127.0.0.1', 'unpkg.com'],
     remotePatterns: [
       {
         protocol: 'http',
@@ -29,6 +29,11 @@ const nextConfig = {
         hostname: '127.0.0.1',
         port: '8080',
         pathname: '/images/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'unpkg.com',
+        pathname: '/pdfjs-dist/**',
       }
     ],
   },
@@ -38,25 +43,17 @@ const nextConfig = {
       canvas: false,
       fs: false,
       path: false,
+      crypto: false,
     };
 
-    config.module.rules.push(
-      {
-        test: /pdf\.worker\.(min\.)?js/,
-        type: 'asset/resource',
-        generator: {
-          filename: 'static/chunks/[name].[hash][ext]'
-        }
-      },
-      {
-        test: /\.(pdf|mp4|mp3)$/i,
-        type: 'asset/resource',
-        generator: {
-          filename: 'static/media/[name].[hash][ext]',
-          publicPath: '/_next/',
-        }
+    config.module.rules.push({
+      test: /\.(pdf|mp4|mp3)$/i,
+      type: 'asset/resource',
+      generator: {
+        filename: 'static/media/[name].[hash][ext]',
+        publicPath: '/_next/',
       }
-    );
+    });
 
     return config;
   },
