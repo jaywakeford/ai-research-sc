@@ -36,6 +36,8 @@ const nextConfig = {
     config.resolve.fallback = {
       ...config.resolve.fallback,
       canvas: false,
+      fs: false,
+      path: false,
     };
 
     config.module.rules.push(
@@ -43,15 +45,15 @@ const nextConfig = {
         test: /pdf\.worker\.(min\.)?js/,
         type: 'asset/resource',
         generator: {
-          filename: 'static/[hash][ext][query]'
+          filename: 'static/chunks/[name].[hash][ext]'
         }
       },
       {
         test: /\.(pdf|mp4|mp3)$/i,
         type: 'asset/resource',
         generator: {
-          filename: 'static/media/[hash][ext][query]',
-          publicPath: '/_next/static/media/',
+          filename: 'static/media/[name].[hash][ext]',
+          publicPath: '/_next/',
         }
       }
     );
