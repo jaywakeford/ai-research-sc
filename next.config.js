@@ -60,8 +60,23 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: '/:path*',
+        source: '/(.*)',
         headers: [
+          {
+            key: 'Content-Security-Policy',
+            value: `
+              default-src 'self';
+              script-src 'self' 'unsafe-inline' https://unpkg.com;
+              style-src 'self' 'unsafe-inline';
+              img-src 'self' data: blob:;
+              media-src 'self' blob:;
+              connect-src 'self' https://unpkg.com;
+              font-src 'self';
+              frame-src 'self';
+              object-src 'none';
+              worker-src 'self' blob:;
+            `.replace(/\n/g, '')
+          },
           {
             key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable',
