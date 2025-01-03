@@ -22,7 +22,39 @@ const nextConfig = {
       };
     }
 
+    // Add rule for handling PDF, video, and audio files
+    config.module.rules.push({
+      test: /\.(pdf|mp4|mp3)$/,
+      use: [
+        {
+          loader: 'file-loader',
+          options: {
+            name: '[path][name].[ext]',
+            publicPath: '/_next/static/media/',
+            outputPath: 'static/media/',
+          },
+        },
+      ],
+    });
+
     return config;
+  },
+  // Enable static file serving from the public directory
+  async rewrites() {
+    return [
+      {
+        source: '/pdfs/:path*',
+        destination: '/static/media/:path*',
+      },
+      {
+        source: '/videos/:path*',
+        destination: '/static/media/:path*',
+      },
+      {
+        source: '/audio/:path*',
+        destination: '/static/media/:path*',
+      },
+    ];
   },
   async headers() {
     return [
@@ -45,6 +77,19 @@ const nextConfig = {
             `.replace(/\n/g, '').replace(/\s+/g, ' ').trim()
           }
         ],
+      },
+      {
+        source: '/static/media/:path*',
+        headers: [
+          {
+            key: 'Content-Type',
+            value: 'application/octet-stream'
+          },
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable'
+          }
+        ]
       }
     ];
   }
