@@ -5,34 +5,40 @@ const nextConfig = {
   poweredByHeader: false,
   images: {
     unoptimized: true,
-    domains: ['localhost', '127.0.0.1', 'unpkg.com', 'cdnjs.cloudflare.com'],
+    domains: ['localhost', '127.0.0.1'],
   },
   webpack: (config, { isServer }) => {
-    // Handle PDF files
-    config.module.rules.push({
-      test: /\.(pdf)$/i,
-      type: 'asset/resource',
-      generator: {
-        filename: 'static/media/[name].[hash][ext]'
-      }
-    });
-
     // Handle media files
     config.module.rules.push({
-      test: /\.(mp4|mp3)$/i,
-      type: 'asset/resource',
-      generator: {
-        filename: 'static/media/[name].[hash][ext]',
-        publicPath: '/_next/',
-        outputPath: 'static/media/'
-      }
+      test: /\.(mp4|webm)$/i,
+      use: [{
+        loader: 'file-loader',
+        options: {
+          publicPath: '/_next/static/media/',
+          outputPath: 'static/media/',
+          name: '[name].[hash].[ext]',
+        },
+      }],
+    });
+
+    // Handle PDF files
+    config.module.rules.push({
+      test: /\.pdf$/i,
+      use: [{
+        loader: 'file-loader',
+        options: {
+          publicPath: '/_next/static/media/',
+          outputPath: 'static/media/',
+          name: '[name].[hash].[ext]',
+        },
+      }],
     });
 
     return config;
   },
-  // Increase the maximum size for static files
+  // Increase buffer size for large files
   experimental: {
-    largePageDataBytes: 128 * 100000, // Increase to ~12.8MB
+    largePageDataBytes: 128 * 100000,
   },
   // Configure headers for media files
   async headers() {

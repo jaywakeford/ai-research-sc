@@ -28,27 +28,43 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   useEffect(() => {
     if (!videoRef.current) return;
 
-    playerRef.current = videojs(videoRef.current, {
+    const options = {
       controls: true,
       fluid: true,
       preload: 'auto',
       responsive: true,
       playbackRates: [0.5, 1, 1.5, 2],
+      html5: {
+        vhs: {
+          overrideNative: true
+        },
+        nativeAudioTracks: false,
+        nativeVideoTracks: false
+      },
       sources: [{
         src: videoUrl,
         type: 'video/mp4'
       }]
-    }, () => {
-      if (playerRef.current) {
-        playerRef.current.on('loadeddata', () => {
-          setLoading(false);
-        });
-        
-        playerRef.current.on('error', () => {
-          setError('Failed to load video');
-          setLoading(false);
-        });
-      }
+    };
+
+    playerRef.current = videojs(videoRef.current, options);
+
+    const player = playerRef.current;
+
+    player.on('ready', () => {
+      console.log('Player is ready');
+      setLoading(false);
+    });
+
+    player.on('error', () => {
+      console.error('Video error:', player.error());
+      setError('Failed to load video. Please try refreshing the page.');
+      setLoading(false);
+    });
+
+    player.on('loadstart', () => {
+      setLoading(true);
+      setError(null);
     });
 
     return () => {
@@ -70,6 +86,12 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         {error ? (
           <div className="flex flex-col items-center justify-center p-8 text-center">
             <p className="text-red-600 dark:text-red-400 mb-4">{error}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md transition-colors"
+            >
+              Retry
+            </button>
           </div>
         ) : (
           <div className="relative aspect-video">
