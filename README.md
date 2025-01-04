@@ -1,72 +1,29 @@
-# AI Research and Supply Chain Analytics Platform
+# AI Research SC Analytics
 
-A comprehensive web application showcasing research papers, analytics implementations, and supply chain management solutions. Built with Next.js and modern web technologies.
+A sophisticated real-time cryptocurrency analysis platform that provides comprehensive market monitoring, technical analysis, and trading strategy development capabilities through a streamlined web interface.
 
 ## Features
 
-- Research Papers Section
-  - PDF Viewer for research documents
-  - Audio summaries for each paper
-  - Video demonstrations for implementations
-  - Interactive UI with glass-card design
+- Real-time market data visualization
+- Asset correlation analysis with BTC dominance
+- Market health indicators
+- Volume distribution tracking
+- Market dominance visualization
+- Sector-based performance analysis
 
-- Supply Chain Analytics
-  - Video demonstrations of implementations
-  - Audio explanations
-  - Process visualizations
-  - Performance metrics
+## Technical Stack
 
-## Technologies Used
-
-- Next.js 14
-- React
-- TypeScript
-- Tailwind CSS
-- PDF.js
-- Video.js
-- Audio Player
+- Frontend: Streamlit
+- Data Visualization: Plotly
+- Data Processing: Pandas and NumPy
+- API Integration: CCXT library
+- Real-Time Updates: WebSocket connections
 
 ## Getting Started
 
-1. Clone the repository:
-```bash
-git clone [repository-url]
-```
-
-2. Install dependencies:
-```bash
-npm install
-```
-
-3. Run the development server:
-```bash
-npm run dev
-```
-
-4. Build for production:
-```bash
-npm run build
-```
-
-5. Start production server:
-```bash
-npm run start
-```
-
-## Project Structure
-
-- `/src/app` - Next.js app router pages
-- `/src/components` - Reusable React components
-- `/public` - Static assets (PDFs, videos, audio files)
-- `/styles` - Global styles and Tailwind configuration
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+1. Clone the repository
+2. Install dependencies: `pip install -r requirements.txt`
+3. Run the application: `streamlit run app.py`
 
 ## License
 
