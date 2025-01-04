@@ -1,13 +1,35 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  output: 'standalone',
   poweredByHeader: false,
-  images: {
-    unoptimized: true,
-    domains: ['localhost', '127.0.0.1'],
+  webpack: (config, { isServer }) => {
+    // Handle binary files
+    config.module.rules.push({
+      test: /\.node$/,
+      use: 'node-loader',
+    });
+
+    // Handle media files
+    config.module.rules.push({
+      test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+      type: 'asset/resource',
+      generator: {
+        filename: 'static/media/[name][ext]'
+      }
+    });
+
+    if (!isServer) {
+      config.resolve.fallback = {
+        fs: false,
+        path: false,
+        crypto: false,
+        canvas: false,
+      };
+    }
+
+    return config;
   },
-  // Increase buffer size for large files
+  // Increase the buffer size for large files
   experimental: {
     largePageDataBytes: 128 * 100000,
   },
@@ -23,8 +45,17 @@ const nextConfig = {
           },
         ],
       },
+      {
+        source: '/videos/:path*',
+        headers: [
+          {
+            key: 'Accept-Ranges',
+            value: 'bytes'
+          }
+        ],
+      },
     ];
-  }
-};
+  },
+}
 
-module.exports = nextConfig; 
+module.exports = nextConfig 

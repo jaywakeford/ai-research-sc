@@ -3,19 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_OPTIONS='--max-old-space-size=2048' next dev",
-    "build": "cross-env NODE_OPTIONS='--max-old-space-size=2048' next build",
-    "start": "cross-env NODE_OPTIONS='--max-old-space-size=2048' next start",
-    "lint": "next lint",
-    "vercel-build": "cross-env NODE_OPTIONS='--max-old-space-size=2048' next build",
-    "vercel-deploy": "vercel deploy --prebuilt",
-    "clean": "rimraf .next out",
-    "prebuild": "npm run clean"
+    "dev": "cross-env NODE_ENV=development NODE_TLS_REJECT_UNAUTHORIZED=0 node server.js",
+    "build": "next build",
+    "start": "cross-env NODE_ENV=production node server.js",
+    "lint": "next lint"
   },
   "dependencies": {
     "@react-pdf/renderer": "3.1.14",
-    "@types/react-pdf": "^6.2.0",
+    "@types/react-pdf": "^7.0.0",
     "@videojs/http-streaming": "^3.16.2",
+    "canvas": "^3.0.1",
     "cross-env": "^7.0.3",
     "hls.js": "^1.5.18",
     "next": "14.0.4",
@@ -23,7 +20,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-h5-audio-player": "^3.9.1",
-    "react-pdf": "^9.2.1",
+    "react-pdf": "7.3.3",
     "video.js": "^8.21.0"
   },
   "devDependencies": {
@@ -31,14 +28,14 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
+    "critters": "^0.0.20",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
-    "file-loader": "^6.2.0",
+    "node-loader": "^2.1.0",
     "postcss": "^8",
     "rimraf": "^5.0.5",
     "tailwindcss": "^3.3.0",
-    "typescript": "^5",
-    "vercel": "^32.7.2"
+    "typescript": "^5"
   },
   "engines": {
     "node": ">=18.0.0"
