@@ -1,11 +1,8 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
-
-interface AudioMark {
-  time: number;
-  label: string;
-}
+import { CldVideoPlayer } from 'next-cloudinary';
+import 'next-cloudinary/dist/cld-video-player.css';
 
 interface AudioPlayerProps {
   src: string;
@@ -13,56 +10,43 @@ interface AudioPlayerProps {
 }
 
 export default function AudioPlayer({ src, title }: AudioPlayerProps) {
-  const audioRef = useRef<HTMLAudioElement>(null);
-  const [marks, setMarks] = useState<AudioMark[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const handleMarkPoint = () => {
-    if (audioRef.current) {
-      const currentTime = audioRef.current.currentTime;
-      const minutes = Math.floor(currentTime / 60);
-      const seconds = Math.floor(currentTime % 60);
-      const label = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-      
-      setMarks(prev => [...prev, { time: currentTime, label }]);
-    }
-  };
-
-  const jumpToMark = (time: number) => {
-    if (audioRef.current) {
-      audioRef.current.currentTime = time;
-      audioRef.current.play();
-    }
-  };
+  // Extract audio ID from URL
+  const audioId = src.split('/').pop()?.split('.')[0] || '';
 
   return (
     <div className="glass-card p-6">
       <h3 className="text-xl font-semibold mb-4 gradient-text">{title}</h3>
       <div className="space-y-4">
-        <audio ref={audioRef} controls className="w-full">
-          <source src={src} type="audio/mpeg" />
-          Your browser does not support the audio element.
-        </audio>
-        
-        <div className="flex justify-between items-center">
-          <button
-            onClick={handleMarkPoint}
-            className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-md transition-colors"
-          >
-            Mark Current Point
-          </button>
-          
-          <div className="flex gap-2">
-            {marks.map((mark, index) => (
-              <button
-                key={index}
-                onClick={() => jumpToMark(mark.time)}
-                className="px-3 py-1 bg-gray-700 hover:bg-gray-600 text-white rounded-md text-sm transition-colors"
-              >
-                {mark.label}
-              </button>
-            ))}
+        {error ? (
+          <div className="text-red-500">{error}</div>
+        ) : (
+          <div className="relative">
+            {loading && (
+              <div className="absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+                <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
+              </div>
+            )}
+            <CldVideoPlayer
+              width="640"
+              height="80"
+              src={audioId}
+              colors={{
+                base: '#000000',
+                text: '#ffffff',
+                accent: '#4f46e5'
+              }}
+              autoPlay="never"
+              onError={() => {
+                setError('Failed to load audio');
+                setLoading(false);
+              }}
+              onPlay={() => setLoading(false)}
+            />
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

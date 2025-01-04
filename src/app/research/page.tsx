@@ -73,7 +73,7 @@ export default function ResearchPage() {
                       <div className="glass-card p-6">
                         <h3 className="text-xl font-semibold mb-6">Implementation Demo</h3>
                         <VideoPlayer 
-                          videoUrl="/videos/bi_trading_dashboard.mp4"
+                          videoUrl="/videos/bi-trading-dashboard.mp4"
                           title="Power BI Analytics Implementation"
                           description="Demonstration of advanced analytics implementation for financial trading systems using Power BI"
                           technologies={['Power BI', 'DAX', 'M Query', 'SQL']}

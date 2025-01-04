@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import { CldVideoPlayer } from 'next-cloudinary';
+import 'next-cloudinary/dist/cld-video-player.css';
 
 interface VideoPlayerProps {
   videoUrl: string;
@@ -17,77 +19,11 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   technologies,
   metrics,
 }) => {
-  const [isPlaying, setIsPlaying] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const videoRef = useRef<HTMLVideoElement>(null);
 
-  useEffect(() => {
-    if (videoRef.current) {
-      const video = videoRef.current;
-
-      const handleLoadedData = () => {
-        setLoading(false);
-        setError(null);
-      };
-
-      const handleError = () => {
-        console.error('Error loading video:', video.error);
-        setError('Failed to load video. Please try refreshing the page.');
-        setLoading(false);
-      };
-
-      const handleLoadStart = () => {
-        setLoading(true);
-      };
-
-      video.addEventListener('loadeddata', handleLoadedData);
-      video.addEventListener('error', handleError);
-      video.addEventListener('loadstart', handleLoadStart);
-
-      // Preload the video
-      video.preload = 'auto';
-
-      return () => {
-        video.removeEventListener('loadeddata', handleLoadedData);
-        video.removeEventListener('error', handleError);
-        video.removeEventListener('loadstart', handleLoadStart);
-      };
-    }
-  }, [videoUrl]);
-
-  const handlePlayPause = () => {
-    if (videoRef.current) {
-      if (isPlaying) {
-        videoRef.current.pause();
-      } else {
-        // Add a play promise to handle autoplay restrictions
-        const playPromise = videoRef.current.play();
-        if (playPromise !== undefined) {
-          playPromise
-            .then(() => {
-              setIsPlaying(true);
-            })
-            .catch(error => {
-              console.error("Error attempting to play video:", error);
-              setError('Unable to play video. Please try clicking again.');
-            });
-        }
-      }
-      setIsPlaying(!isPlaying);
-    }
-  };
-
-  const handleRetry = () => {
-    if (videoRef.current) {
-      setLoading(true);
-      setError(null);
-      // Force video reload with timestamp to bypass cache
-      const timestamp = new Date().getTime();
-      videoRef.current.src = `${videoUrl}?t=${timestamp}`;
-      videoRef.current.load();
-    }
-  };
+  // Extract video ID from URL
+  const videoId = videoUrl.split('/').pop()?.split('.')[0] || '';
 
   return (
     <div className="w-full bg-gray-50 dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 mb-8">
@@ -101,38 +37,25 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         {error ? (
           <div className="flex flex-col items-center justify-center p-8 text-center">
             <p className="text-red-600 dark:text-red-400 mb-4">{error}</p>
-            <button
-              onClick={handleRetry}
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-            >
-              Retry
-            </button>
           </div>
         ) : (
           <div className="relative aspect-video">
-            <video
-              ref={videoRef}
-              className="w-full h-full object-cover"
-              onClick={handlePlayPause}
-              style={{ cursor: 'pointer' }}
-              playsInline
-              preload="auto"
-            >
-              <source src={videoUrl} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-            {!loading && !isPlaying && (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <button
-                  onClick={handlePlayPause}
-                  className="p-4 rounded-full bg-blue-600 bg-opacity-75 hover:bg-opacity-100 transition-opacity"
-                >
-                  <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
-                  </svg>
-                </button>
-              </div>
-            )}
+            <CldVideoPlayer
+              width="1920"
+              height="1080"
+              src={videoId}
+              colors={{
+                base: '#000000',
+                text: '#ffffff',
+                accent: '#4f46e5'
+              }}
+              autoPlay="never"
+              onError={() => {
+                setError('Failed to load video');
+                setLoading(false);
+              }}
+              onPlay={() => setLoading(false)}
+            />
           </div>
         )}
       </div>
