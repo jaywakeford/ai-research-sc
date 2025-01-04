@@ -34,4 +34,12 @@ next-env.d.ts
 
 # Large files
 *.node
-temp_nextjs/ 
+temp_nextjs/
+
+# Include media files
+!public/videos/
+!public/pdfs/
+!public/audio/
+!public/videos/*.mp4
+!public/pdfs/*.pdf
+!public/audio/*.mp3 
