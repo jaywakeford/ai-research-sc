@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
@@ -77,6 +77,14 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
                 <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-600"></div>
               </div>
             }
+            options={{
+              cMapUrl: '/cmaps/',
+              cMapPacked: true,
+              standardFontDataUrl: '/standard_fonts/',
+              disableWorker: true,
+              disableAutoFetch: true,
+              disableStream: true
+            }}
           >
             <Page
               pageNumber={pageNumber}
@@ -88,6 +96,7 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
                   <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-600"></div>
                 </div>
               }
+              canvasBackground="transparent"
             />
           </Document>
         </div>

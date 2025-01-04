@@ -8,6 +8,15 @@ const nextConfig = {
     domains: ['localhost', '127.0.0.1', 'unpkg.com', 'cdnjs.cloudflare.com'],
   },
   webpack: (config, { isServer }) => {
+    // Add fallbacks for node modules
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      canvas: false,
+      fs: false,
+      path: false,
+      crypto: false,
+    };
+
     // Handle PDF.js
     if (!isServer) {
       config.resolve.alias = {

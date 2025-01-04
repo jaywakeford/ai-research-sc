@@ -26,7 +26,8 @@
     "react": "^18",
     "react-dom": "^18",
     "react-h5-audio-player": "^3.9.1",
-    "react-pdf": "7.5.1"
+    "react-pdf": "7.5.1",
+    "canvas": "^2.11.2"
   },
   "devDependencies": {
     "@types/node": "^20",
