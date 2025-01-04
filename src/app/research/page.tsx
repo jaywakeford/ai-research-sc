@@ -9,32 +9,32 @@ const researchPapers = [
     id: 'powerbi',
     title: 'Power BI Analytics Development',
     description: 'Advanced analytics implementation for financial trading systems using Power BI',
-    pdfUrl: '/pdfs/powerbi-analytics-development-a.pdf',
-    audioUrl: '/audio/power-bi-analytics-for-at-the-money-trading.mp3',
+    pdfUrl: '/media/pdfs/powerbi-analytics-development-a.pdf',
+    audioUrl: '/media/audio/power-bi-analytics-for-at-the-money-trading.mp3',
     tags: ['Power BI', 'Analytics', 'Trading']
   },
   {
     id: 'agents',
     title: 'AI Agent Systems Research',
     description: 'Research on AI agent systems for finance and macroeconomic analysis',
-    pdfUrl: '/pdfs/agents-research-b.pdf',
-    audioUrl: '/audio/ai-agent-systems-for-finance-and-macroeconomics.mp3',
+    pdfUrl: '/media/pdfs/agents-research-b.pdf',
+    audioUrl: '/media/audio/ai-agent-systems-for-finance-and-macroeconomics.mp3',
     tags: ['AI', 'Finance', 'Agents']
   },
   {
     id: 'interpreter',
     title: 'Open Interpreter Integration',
     description: 'Automating workflows through advanced interpreter systems',
-    pdfUrl: '/pdfs/open-interpreter-c.pdf',
-    audioUrl: '/audio/automating-workflows-with-open-interpreter.mp3',
+    pdfUrl: '/media/pdfs/open-interpreter-c.pdf',
+    audioUrl: '/media/audio/automating-workflows-with-open-interpreter.mp3',
     tags: ['Automation', 'Workflow', 'Integration']
   },
   {
     id: 'ml',
     title: 'Independent Machine Learning Research',
     description: 'Machine learning applications in financial trading systems',
-    pdfUrl: '/pdfs/independent-ml-learning-model-d.pdf',
-    audioUrl: '/audio/independent-machine-learning-research-in-financial-trading.mp3',
+    pdfUrl: '/media/pdfs/independent-ml-learning-model-d.pdf',
+    audioUrl: '/media/audio/independent-machine-learning-research-in-financial-trading.mp3',
     tags: ['Machine Learning', 'Trading', 'Research']
   }
 ];
