@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
-import { CldVideoPlayer } from 'next-cloudinary';
-import 'next-cloudinary/dist/cld-video-player.css';
+import React, { useEffect, useRef, useState } from 'react';
+import videojs from 'video.js';
+import 'video.js/dist/video-js.css';
+import Player from 'video.js/dist/types/player';
 
 interface VideoPlayerProps {
   videoUrl: string;
@@ -19,11 +20,43 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   technologies,
   metrics,
 }) => {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const playerRef = useRef<Player | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Extract video ID from URL
-  const videoId = videoUrl.split('/').pop()?.split('.')[0] || '';
+  useEffect(() => {
+    if (!videoRef.current) return;
+
+    playerRef.current = videojs(videoRef.current, {
+      controls: true,
+      fluid: true,
+      preload: 'auto',
+      responsive: true,
+      playbackRates: [0.5, 1, 1.5, 2],
+      sources: [{
+        src: videoUrl,
+        type: 'video/mp4'
+      }]
+    }, () => {
+      if (playerRef.current) {
+        playerRef.current.on('loadeddata', () => {
+          setLoading(false);
+        });
+        
+        playerRef.current.on('error', () => {
+          setError('Failed to load video');
+          setLoading(false);
+        });
+      }
+    });
+
+    return () => {
+      if (playerRef.current) {
+        playerRef.current.dispose();
+      }
+    };
+  }, [videoUrl]);
 
   return (
     <div className="w-full bg-gray-50 dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 mb-8">
@@ -40,22 +73,12 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
           </div>
         ) : (
           <div className="relative aspect-video">
-            <CldVideoPlayer
-              width="1920"
-              height="1080"
-              src={videoId}
-              colors={{
-                base: '#000000',
-                text: '#ffffff',
-                accent: '#4f46e5'
-              }}
-              autoPlay="never"
-              onError={() => {
-                setError('Failed to load video');
-                setLoading(false);
-              }}
-              onPlay={() => setLoading(false)}
-            />
+            <div data-vjs-player>
+              <video
+                ref={videoRef}
+                className="video-js vjs-big-play-centered vjs-theme-city"
+              />
+            </div>
           </div>
         )}
       </div>

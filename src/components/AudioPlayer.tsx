@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
-import { CldVideoPlayer } from 'next-cloudinary';
-import 'next-cloudinary/dist/cld-video-player.css';
+import React, { useRef, useState, useEffect } from 'react';
+import H5AudioPlayer, { RHAP_UI } from 'react-h5-audio-player';
+import 'react-h5-audio-player/lib/styles.css';
 
 interface AudioPlayerProps {
   src: string;
@@ -12,9 +12,16 @@ interface AudioPlayerProps {
 export default function AudioPlayer({ src, title }: AudioPlayerProps) {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const playerRef = useRef<H5AudioPlayer>(null);
 
-  // Extract audio ID from URL
-  const audioId = src.split('/').pop()?.split('.')[0] || '';
+  useEffect(() => {
+    setLoading(false);
+  }, []);
+
+  const handleError = () => {
+    setError('Failed to load audio');
+    setLoading(false);
+  };
 
   return (
     <div className="glass-card p-6">
@@ -29,21 +36,29 @@ export default function AudioPlayer({ src, title }: AudioPlayerProps) {
                 <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
               </div>
             )}
-            <CldVideoPlayer
-              width="640"
-              height="80"
-              src={audioId}
-              colors={{
-                base: '#000000',
-                text: '#ffffff',
-                accent: '#4f46e5'
+            <H5AudioPlayer
+              ref={playerRef}
+              src={src}
+              onError={handleError}
+              autoPlay={false}
+              autoPlayAfterSrcChange={false}
+              showJumpControls={true}
+              showFilledVolume={true}
+              customProgressBarSection={[
+                RHAP_UI.PROGRESS_BAR,
+                RHAP_UI.CURRENT_TIME,
+                RHAP_UI.VOLUME
+              ]}
+              customControlsSection={[
+                RHAP_UI.MAIN_CONTROLS,
+                RHAP_UI.LOOP,
+                RHAP_UI.VOLUME,
+                RHAP_UI.PROGRESS_BAR,
+              ]}
+              style={{
+                background: 'transparent',
+                boxShadow: 'none',
               }}
-              autoPlay="never"
-              onError={() => {
-                setError('Failed to load audio');
-                setLoading(false);
-              }}
-              onPlay={() => setLoading(false)}
             />
           </div>
         )}
