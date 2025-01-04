@@ -4,6 +4,11 @@ const nextConfig = {
   poweredByHeader: false,
   swcMinify: true,
   compress: true,
+  
+  // Add base path for GitHub Pages
+  basePath: process.env.NODE_ENV === 'production' ? '/ai-research-sc-analytics' : '',
+  
+  // Enable static file serving from /public directory
   webpack: (config, { isServer }) => {
     // Handle media files
     config.module.rules.push({
@@ -24,49 +29,30 @@ const nextConfig = {
 
     return config;
   },
-  // Increase buffer size for large files
-  experimental: {
-    largePageDataBytes: 128 * 100000,
+
+  // Configure static file serving
+  async rewrites() {
+    return [
+      {
+        source: '/media/:path*',
+        destination: 'https://jaywakeford.github.io/ai-research-sc-analytics/media/:path*'
+      }
+    ];
   },
+
   // Configure headers for media files
   async headers() {
     return [
       {
-        source: '/pdfs/:path*',
+        source: '/media/:path*',
         headers: [
           {
-            key: 'Content-Type',
-            value: 'application/pdf'
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable'
           },
           {
-            key: 'Accept-Ranges',
-            value: 'bytes'
-          }
-        ]
-      },
-      {
-        source: '/audio/:path*',
-        headers: [
-          {
-            key: 'Content-Type',
-            value: 'audio/mpeg'
-          },
-          {
-            key: 'Accept-Ranges',
-            value: 'bytes'
-          }
-        ]
-      },
-      {
-        source: '/videos/:path*',
-        headers: [
-          {
-            key: 'Content-Type',
-            value: 'video/mp4'
-          },
-          {
-            key: 'Accept-Ranges',
-            value: 'bytes'
+            key: 'Access-Control-Allow-Origin',
+            value: '*'
           }
         ]
       }
