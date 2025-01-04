@@ -32,14 +32,29 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Large files
-*.node
+# Temporary files
 temp_nextjs/
 
-# Include media files
+# Media files (handled by Git LFS)
+*.mp4
+*.mp3
+*.pdf
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.ico
+*.ttf
+*.woff
+*.woff2
+
+# Explicitly include public media files
+!public/
 !public/videos/
 !public/pdfs/
 !public/audio/
-!public/videos/*.mp4
-!public/pdfs/*.pdf
-!public/audio/*.mp3 
+!public/images/
+!public/videos/**/*
+!public/pdfs/**/*
+!public/audio/**/*
+!public/images/**/* 
