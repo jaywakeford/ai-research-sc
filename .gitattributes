@@ -1,18 +1,33 @@
-# Enforce LF line endings
+# Text files
 * text=auto eol=lf
-# Denote all files that are truly binary and should not be modified
-*.png binary
-*.jpg binary
-*.jpeg binary
-*.gif binary
-*.ico binary
-*.mov binary
-*.mp4 filter=lfs diff=lfs merge=lfs -text
+
+# Media files
 *.mp3 filter=lfs diff=lfs merge=lfs -text
+*.mp4 filter=lfs diff=lfs merge=lfs -text
 *.pdf filter=lfs diff=lfs merge=lfs -text
-*.ttf binary
-*.woff binary
-*.woff2 binary
-public/**/*.mp4 filter=lfs diff=lfs merge=lfs -text
-public/**/*.mp3 filter=lfs diff=lfs merge=lfs -text
-public/**/*.pdf filter=lfs diff=lfs merge=lfs -text
+*.jpg filter=lfs diff=lfs merge=lfs -text
+*.jpeg filter=lfs diff=lfs merge=lfs -text
+*.png filter=lfs diff=lfs merge=lfs -text
+*.gif filter=lfs diff=lfs merge=lfs -text
+*.ico filter=lfs diff=lfs merge=lfs -text
+
+# Fonts
+*.ttf filter=lfs diff=lfs merge=lfs -text
+*.woff filter=lfs diff=lfs merge=lfs -text
+*.woff2 filter=lfs diff=lfs merge=lfs -text
+
+# JavaScript
+*.js text
+**/pdf.worker*.js filter=lfs diff=lfs merge=lfs -text
+
+# Source files
+*.ts text
+*.tsx text
+*.jsx text
+*.json text
+*.css text
+*.html text
+*.md text
+*.yml text
+*.yaml text
+LICENSE text
