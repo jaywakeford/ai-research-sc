@@ -1,9 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
-import videojs from 'video.js';
-import 'video.js/dist/video-js.css';
-import Player from 'video.js/dist/types/player';
+import React, { useRef, useState } from 'react';
 
 interface VideoPlayerProps {
   videoUrl: string;
@@ -20,59 +17,20 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   technologies,
   metrics,
 }) => {
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const playerRef = useRef<Player | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (!videoRef.current) return;
+  const handleLoadedData = () => {
+    setLoading(false);
+    setError(null);
+  };
 
-    const options = {
-      controls: true,
-      fluid: true,
-      preload: 'auto',
-      responsive: true,
-      playbackRates: [0.5, 1, 1.5, 2],
-      html5: {
-        vhs: {
-          overrideNative: true
-        },
-        nativeAudioTracks: false,
-        nativeVideoTracks: false
-      },
-      sources: [{
-        src: videoUrl,
-        type: 'video/mp4'
-      }]
-    };
-
-    playerRef.current = videojs(videoRef.current, options);
-
-    const player = playerRef.current;
-
-    player.on('ready', () => {
-      console.log('Player is ready');
-      setLoading(false);
-    });
-
-    player.on('error', () => {
-      console.error('Video error:', player.error());
-      setError('Failed to load video. Please try refreshing the page.');
-      setLoading(false);
-    });
-
-    player.on('loadstart', () => {
-      setLoading(true);
-      setError(null);
-    });
-
-    return () => {
-      if (playerRef.current) {
-        playerRef.current.dispose();
-      }
-    };
-  }, [videoUrl]);
+  const handleError = () => {
+    console.error('Video error:', videoRef.current?.error);
+    setError('Failed to load video. Please try refreshing the page.');
+    setLoading(false);
+  };
 
   return (
     <div className="w-full bg-gray-50 dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 mb-8">
@@ -95,12 +53,17 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
           </div>
         ) : (
           <div className="relative aspect-video">
-            <div data-vjs-player>
-              <video
-                ref={videoRef}
-                className="video-js vjs-big-play-centered vjs-theme-city"
-              />
-            </div>
+            <video
+              ref={videoRef}
+              className="w-full h-full"
+              controls
+              preload="auto"
+              onLoadedData={handleLoadedData}
+              onError={handleError}
+            >
+              <source src={videoUrl} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
           </div>
         )}
       </div>
