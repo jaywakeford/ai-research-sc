@@ -13,21 +13,13 @@
     "prebuild": "npm run clean"
   },
   "dependencies": {
-    "@react-pdf-viewer/core": "3.12.0",
-    "@react-pdf-viewer/default-layout": "3.12.0",
-    "@react-pdf-viewer/page-navigation": "3.12.0",
-    "@react-pdf-viewer/scroll-mode": "3.12.0",
-    "@react-pdf-viewer/zoom": "3.12.0",
     "@react-pdf/renderer": "3.1.14",
-    "@types/react-pdf": "6.2.0",
     "cross-env": "^7.0.3",
     "next": "14.0.4",
     "pdfjs-dist": "3.4.120",
     "react": "^18",
     "react-dom": "^18",
-    "react-h5-audio-player": "^3.9.1",
-    "react-pdf": "7.5.1",
-    "canvas": "^2.11.2"
+    "react-h5-audio-player": "^3.9.1"
   },
   "devDependencies": {
     "@types/node": "^20",

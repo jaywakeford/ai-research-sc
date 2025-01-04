@@ -8,23 +8,6 @@ const nextConfig = {
     domains: ['localhost', '127.0.0.1', 'unpkg.com', 'cdnjs.cloudflare.com'],
   },
   webpack: (config, { isServer }) => {
-    // Add fallbacks for node modules
-    config.resolve.fallback = {
-      ...config.resolve.fallback,
-      canvas: false,
-      fs: false,
-      path: false,
-      crypto: false,
-    };
-
-    // Handle PDF.js
-    if (!isServer) {
-      config.resolve.alias = {
-        ...config.resolve.alias,
-        'pdfjs-dist': require.resolve('pdfjs-dist/legacy/build/pdf'),
-      };
-    }
-
     // Handle media files
     config.module.rules.push({
       test: /\.(pdf|mp4|mp3)$/i,
@@ -58,15 +41,6 @@ const nextConfig = {
             ].join('; ')
           }
         ]
-      }
-    ];
-  },
-  // Ensure static files are handled correctly
-  async rewrites() {
-    return [
-      {
-        source: '/static/media/:path*',
-        destination: '/static/media/:path*'
       }
     ];
   }
