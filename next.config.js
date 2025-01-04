@@ -21,7 +21,7 @@ const nextConfig = {
       test: /\.(pdf|mp4|mp3)$/i,
       type: 'asset',
       generator: {
-        filename: 'static/media/[hash][ext][query]'
+        filename: 'static/media/[name].[hash][ext]'
       }
     });
 
@@ -49,6 +49,15 @@ const nextConfig = {
             ].join('; ')
           }
         ]
+      }
+    ];
+  },
+  // Ensure static files are handled correctly
+  async rewrites() {
+    return [
+      {
+        source: '/static/media/:path*',
+        destination: '/static/media/:path*'
       }
     ];
   }
