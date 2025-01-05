@@ -28,6 +28,12 @@ const nextConfig = {
 
     return config;
   },
+  // Ensure CSS modules work correctly
+  cssModules: true,
+  cssLoaderOptions: {
+    importLoaders: 1,
+    localIdentName: '[local]___[hash:base64:5]',
+  },
   poweredByHeader: false,
   generateBuildId: async () => {
     return 'build-' + Date.now();
