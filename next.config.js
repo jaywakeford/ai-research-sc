@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const isProd = process.env.NODE_ENV === 'production';
+const basePath = isProd ? '/ai-research-sc-analytics' : '';
 
 const nextConfig = {
   output: 'export',
@@ -8,8 +9,8 @@ const nextConfig = {
     unoptimized: true,
     remotePatterns: [],
   },
-  basePath: isProd ? '/ai-research-sc-analytics' : '',
-  assetPrefix: isProd ? '/ai-research-sc-analytics/' : '',
+  basePath,
+  assetPrefix: `${basePath}/`,
   trailingSlash: true,
   reactStrictMode: true,
   swcMinify: true,
@@ -25,6 +26,15 @@ const nextConfig = {
     if (!isServer) {
       config.resolve.alias['pdfjs-dist'] = 'pdfjs-dist/webpack';
     }
+
+    // Add rule for media files
+    config.module.rules.push({
+      test: /\.(mp3|mp4|pdf)$/i,
+      type: 'asset/resource',
+      generator: {
+        filename: 'media/[name][ext]',
+      },
+    });
 
     return config;
   },
