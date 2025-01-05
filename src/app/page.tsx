@@ -5,6 +5,7 @@ import HeroSection from '@/components/HeroSection';
 import ImageCard from '@/components/ImageCard';
 import MetricsSection from '@/components/MetricsSection';
 import AudioPlayer from '@/components/AudioPlayer';
+import Image from 'next/image';
 
 export default function Home() {
   return (
@@ -19,11 +20,14 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center gap-8">
             <div className="w-full md:w-1/3">
-              <div className="rounded-full overflow-hidden aspect-square shadow-xl border-4 border-indigo-500/20">
-                <img 
-                  src="/images/selfie2.JPEG" 
-                  alt="Profile"
-                  className="w-full h-full object-cover"
+              <div className="relative w-full aspect-square rounded-lg overflow-hidden">
+                <Image
+                  src="/images/selfie2.jpg"
+                  alt="Profile Picture"
+                  fill
+                  priority
+                  className="object-cover"
+                  unoptimized
                 />
               </div>
             </div>
@@ -91,10 +95,13 @@ export default function Home() {
           <div className="flex flex-col md:flex-row gap-8 items-center">
             <div className="w-full md:w-1/2">
               <div className="relative aspect-[16/9] rounded-lg overflow-hidden">
-                <img 
+                <Image 
                   src="/images/logistics.jpg" 
                   alt="Supply Chain Operations"
-                  className="object-cover w-full h-full"
+                  fill
+                  priority
+                  className="object-cover"
+                  unoptimized
                 />
               </div>
             </div>
