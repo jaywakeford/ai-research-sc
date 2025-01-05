@@ -32,11 +32,16 @@ const nextConfig = {
       test: /\.(mp3|mp4|pdf)$/i,
       type: 'asset/resource',
       generator: {
-        filename: 'media/[name][ext]',
+        filename: 'static/media/[name][ext]',
+        publicPath: `${basePath}/_next/`,
       },
     });
 
     return config;
+  },
+  // Ensure static files are copied
+  experimental: {
+    outputFileTracingRoot: process.cwd(),
   },
   poweredByHeader: false,
   generateBuildId: async () => {
