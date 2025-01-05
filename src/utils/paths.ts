@@ -5,13 +5,14 @@ const getBasePath = () => {
 
 export const getMediaPath = (path: string): string => {
   const basePath = getBasePath();
-  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  const cleanPath = path.startsWith('/') ? path : `/media/${path}`;
   return `${basePath}${cleanPath}`;
 };
 
 export const getImagePath = (path: string): string => {
-  const basePath = process.env.NODE_ENV === 'production' ? '/ai-research-sc-analytics' : '';
-  return `${basePath}${path}`;
+  const basePath = getBasePath();
+  const cleanPath = path.startsWith('/') ? path : `/images/${path}`;
+  return `${basePath}${cleanPath}`;
 };
 
 export const getPdfPath = (path: string): string => {

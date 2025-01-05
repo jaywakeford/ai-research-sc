@@ -33,13 +33,18 @@ const PdfViewer: React.FC<PdfViewerProps> = memo(({ pdfUrl }) => {
   const [workerInitialized, setWorkerInitialized] = useState<boolean>(false);
   const fullPath = getPdfPath(pdfUrl);
 
+  useEffect(() => {
+    console.log('Loading PDF from path:', fullPath);
+  }, [fullPath]);
+
   // Initialize PDF.js worker
   useEffect(() => {
     const initWorker = async () => {
       try {
         const pdfjs = await import('react-pdf');
-        pdfjs.pdfjs.GlobalWorkerOptions.workerSrc = 
-          `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.pdfjs.version}/pdf.worker.min.js`;
+        if (typeof window !== 'undefined') {
+          pdfjs.pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js';
+        }
         setWorkerInitialized(true);
       } catch (err) {
         console.error('Error initializing PDF worker:', err);

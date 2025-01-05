@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { getVideoPath } from '@/utils/paths';
 
 interface VideoPlayerProps {
@@ -23,51 +23,40 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   const [loading, setLoading] = useState(true);
   const fullPath = getVideoPath(videoUrl);
 
+  useEffect(() => {
+    console.log('Loading video from path:', fullPath);
+  }, [fullPath]);
+
   const handleLoadedData = () => {
     setLoading(false);
     setError(null);
   };
 
   const handleError = () => {
-    console.error('Video error:', videoRef.current?.error);
-    setError('Failed to load video. Please try refreshing the page.');
+    console.error('Video loading error for path:', fullPath);
+    setError('Failed to load video');
     setLoading(false);
   };
 
   return (
-    <div className="w-full bg-gray-50 dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 mb-8">
-      <div className="relative">
+    <div className="glass-card p-6">
+      <h3 className="text-2xl font-bold mb-4 gradient-text">{title}</h3>
+      <div className="relative aspect-video mb-6">
         {loading && (
-          <div className="absolute inset-0 flex items-center justify-center bg-gray-50 dark:bg-gray-800 bg-opacity-90 z-10">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
+          <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+            <div className="loading-spinner" />
           </div>
         )}
-
-        {error ? (
-          <div className="flex flex-col items-center justify-center p-8 text-center">
-            <p className="text-red-600 dark:text-red-400 mb-4">{error}</p>
-            <button
-              onClick={() => window.location.reload()}
-              className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md transition-colors"
-            >
-              Retry
-            </button>
-          </div>
-        ) : (
-          <div className="relative aspect-video">
-            <video
-              ref={videoRef}
-              className="w-full h-full"
-              controls
-              preload="auto"
-              onLoadedData={handleLoadedData}
-              onError={handleError}
-            >
-              <source src={fullPath} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-          </div>
-        )}
+        <video
+          ref={videoRef}
+          className="w-full h-full rounded-lg"
+          controls
+          onLoadedData={handleLoadedData}
+          onError={handleError}
+          src={fullPath}
+        >
+          Your browser does not support the video tag.
+        </video>
       </div>
 
       <div className="p-6">
