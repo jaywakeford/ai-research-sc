@@ -20,6 +20,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   const videoRef = useRef<HTMLVideoElement>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 
   const handleLoadedData = () => {
     setLoading(false);
@@ -61,7 +62,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
               onLoadedData={handleLoadedData}
               onError={handleError}
             >
-              <source src={videoUrl} type="video/mp4" />
+              <source src={`${basePath}${videoUrl}`} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
           </div>
