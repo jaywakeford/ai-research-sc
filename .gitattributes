@@ -1,6 +1,5 @@
 # Auto detect text files and perform LF normalization
 * text=auto eol=lf
-
 # Media files (tracked by Git LFS)
 *.mp3 filter=lfs diff=lfs merge=lfs -text
 *.mp4 filter=lfs diff=lfs merge=lfs -text
@@ -10,15 +9,12 @@
 *.png filter=lfs diff=lfs merge=lfs -text
 *.gif filter=lfs diff=lfs merge=lfs -text
 *.ico filter=lfs diff=lfs merge=lfs -text
-
 # Font files (tracked by Git LFS)
 *.ttf filter=lfs diff=lfs merge=lfs -text
 *.woff filter=lfs diff=lfs merge=lfs -text
 *.woff2 filter=lfs diff=lfs merge=lfs -text
-
 # Large JavaScript files (tracked by Git LFS)
 **/pdf.worker*.js filter=lfs diff=lfs merge=lfs -text
-
 # Text files (explicit declarations)
 *.js text
 *.ts text

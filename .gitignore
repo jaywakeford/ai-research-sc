@@ -50,11 +50,12 @@ temp_nextjs/
 
 # Explicitly include public media files
 !public/
-!public/videos/
-!public/pdfs/
-!public/audio/
-!public/images/
-!public/videos/**/*
-!public/pdfs/**/*
-!public/audio/**/*
-!public/images/**/* 
+!public/media/
+!public/media/audio/
+!public/media/videos/
+!public/media/pdfs/
+!public/media/images/
+!public/media/audio/**/*
+!public/media/videos/**/*
+!public/media/pdfs/**/*
+!public/media/images/**/* 
