@@ -1,0 +1,5 @@
+[33mcommit 97541ac277cfcdf701e27bf2dd27427e9715a29b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: jaywakeford <jaywakeford@icloud.com>
+Date:   Sat Jan 4 23:10:46 2025 -0700
+
+    Fix build configuration for Vercel deployment

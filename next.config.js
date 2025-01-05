@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+const isProd = process.env.NODE_ENV === 'production';
+
 const nextConfig = {
   output: 'export',
   distDir: '.next',
@@ -6,21 +8,11 @@ const nextConfig = {
     unoptimized: true,
     remotePatterns: [],
   },
-  basePath: process.env.NEXT_PUBLIC_BASE_PATH || '',
-  assetPrefix: process.env.NEXT_PUBLIC_BASE_PATH || '',
+  basePath: isProd ? '/ai-research-sc-analytics' : '',
+  assetPrefix: isProd ? '/ai-research-sc-analytics/' : '',
   trailingSlash: true,
   reactStrictMode: true,
   swcMinify: true,
-  experimental: {
-    optimizeCss: {
-      inlineFonts: false,
-      minify: true,
-      critters: {
-        preload: 'media',
-        preloadFonts: false
-      }
-    }
-  },
   webpack: (config, { isServer }) => {
     // Handle canvas dependency
     config.resolve.alias.canvas = false;

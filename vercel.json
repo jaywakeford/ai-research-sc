@@ -1,7 +1,10 @@
 {
   "version": 2,
   "git": {
-    "lfs": true
+    "lfs": true,
+    "deploymentEnabled": {
+      "main": true
+    }
   },
   "buildCommand": "npm run vercel-build",
   "installCommand": "npm install",
@@ -31,6 +34,12 @@
           "value": "bytes"
         }
       ]
+    }
+  ],
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next"
     }
   ],
   "env": {

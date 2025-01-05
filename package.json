@@ -2,6 +2,7 @@
   "name": "ai-research-sc-analytics",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://jaywakeford.github.io/ai-research-sc-analytics",
   "scripts": {
     "dev": "next dev",
     "prebuild": "git lfs install && rimraf .next out",
@@ -9,11 +10,13 @@
     "start": "next start",
     "lint": "next lint",
     "clean": "rimraf .next out",
-    "vercel-build": "npm run clean && NEXT_TELEMETRY_DISABLED=1 next build"
+    "export": "next export",
+    "deploy": "gh-pages -d out"
   },
   "dependencies": {
     "@react-pdf/renderer": "3.1.14",
     "canvas": "^3.0.1",
+    "critters": "^0.0.20",
     "hls.js": "^1.5.18",
     "next": "14.0.4",
     "pdfjs-dist": "3.4.120",
@@ -28,9 +31,9 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
-    "critters": "^0.0.20",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
+    "gh-pages": "^6.1.1",
     "postcss": "^8",
     "rimraf": "^5.0.5",
     "tailwindcss": "^3.3.0",
