@@ -1,8 +1,11 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import React, { useState } from 'react';
-import PdfViewer from '@/components/PdfViewer';
-import AudioPlayer from '@/components/AudioPlayer';
+
+// Dynamically import components with ssr: false
+const PdfViewer = dynamic(() => import('@/components/PdfViewer'), { ssr: false });
+const AudioPlayer = dynamic(() => import('@/components/AudioPlayer'), { ssr: false });
 
 const researchPapers = [
   {
