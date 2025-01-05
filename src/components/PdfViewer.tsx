@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback, memo } from 'react';
 import dynamic from 'next/dynamic';
+import { getMediaPath } from '@/utils/paths';
 
 // Dynamically import PDF components with loading fallback
 const Document = dynamic(
@@ -30,6 +31,7 @@ const PdfViewer: React.FC<PdfViewerProps> = memo(({ pdfUrl }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [workerInitialized, setWorkerInitialized] = useState<boolean>(false);
+  const fullPath = getMediaPath(pdfUrl);
 
   // Initialize PDF.js worker
   useEffect(() => {
@@ -77,13 +79,13 @@ const PdfViewer: React.FC<PdfViewerProps> = memo(({ pdfUrl }) => {
       {error && (
         <div className="error-container">
           <div className="error-message">Error loading PDF: {error}</div>
-          <div className="error-details">File: {pdfUrl}</div>
+          <div className="error-details">File: {fullPath}</div>
         </div>
       )}
       
       {!error && (
         <Document
-          file={pdfUrl}
+          file={fullPath}
           onLoadSuccess={onDocumentLoadSuccess}
           onLoadError={onDocumentLoadError}
           loading={<div>Loading PDF...</div>}

@@ -13,8 +13,7 @@ export default function AudioPlayer({ src, title }: AudioPlayerProps) {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const playerRef = useRef<H5AudioPlayer>(null);
-  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
-  const fullPath = `${basePath}${src}`;
+  const fullPath = src.startsWith('/') ? src : `/${src}`;
 
   useEffect(() => {
     console.log('Audio player mounted with path:', fullPath);
