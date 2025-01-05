@@ -29,7 +29,8 @@
       ]
     }
   ],
-  "buildCommand": "git lfs pull && npm run build",
+  "buildCommand": "npm run build",
+  "installCommand": "git lfs install && npm install",
   "outputDirectory": "out",
   "framework": "nextjs",
   "env": {
