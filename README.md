@@ -34,29 +34,27 @@ A comprehensive web application showcasing research papers, analytics implementa
 
 ```bash
 git clone [repository-url]
-
 ```
 
-2.Install dependencies:
+1. Install dependencies:
 
 ```bash
 npm install
-
 ```
 
-3.Run the development server:
+1. Run the development server:
 
 ```bash
 npm run dev
 ```
 
-4.Build for production:
+1. Build for production:
 
 ```bash
 npm run build
 ```
 
-5.Start production server:
+1. Start production server:
 
 ```bash
 npm run start
