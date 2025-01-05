@@ -10,12 +10,34 @@ import Image from 'next/image';
 export default function Home() {
   return (
     <main>
-      <HeroSection
-        title="AI Innovation & Operational Excellence"
-        subtitle="Bridging advanced artificial intelligence with enterprise operations through innovative research and practical implementation. Specializing in computer vision, GPT-4 integration, and large-scale operational transformation."
-        imagePath="/images/homepage.jpg"
-      />
-      
+      <section className="relative py-16 overflow-hidden">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col lg:flex-row items-center gap-8">
+            <div className="w-full lg:w-1/2">
+              <h1 className="text-5xl font-bold mb-6 gradient-text">
+                AI Innovation & Operational Excellence
+              </h1>
+              <p className="text-xl text-gray-300 mb-8">
+                Bridging advanced artificial intelligence with enterprise operations through innovative research and practical implementation. Specializing in computer vision, GPT-4 integration, and large-scale operational transformation.
+              </p>
+            </div>
+            
+            <div className="w-full lg:w-1/2">
+              <div className="relative aspect-[16/9] rounded-lg overflow-hidden">
+                <Image
+                  src="/images/logistics-network.jpg"
+                  alt="Logistics Network Visualization"
+                  fill
+                  priority
+                  className="object-cover object-center"
+                  unoptimized
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center gap-8">
