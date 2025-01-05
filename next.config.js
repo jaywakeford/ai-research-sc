@@ -9,7 +9,16 @@ const nextConfig = {
     unoptimized: true,
   },
   trailingSlash: true,
-  reactStrictMode: true
+  reactStrictMode: true,
+  webpack: (config) => {
+    // Handle canvas dependency
+    config.resolve.alias.canvas = false;
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      canvas: false,
+    };
+    return config;
+  }
 };
 
 module.exports = nextConfig; 
