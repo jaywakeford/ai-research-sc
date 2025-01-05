@@ -34,5 +34,20 @@
   "env": {
     "NEXT_PUBLIC_BASE_PATH": "/ai-research-sc-analytics",
     "NODE_ENV": "production"
-  }
+  },
+  "routes": [
+    {
+      "src": "/media/(.*)",
+      "headers": { "cache-control": "public, max-age=31536000, immutable" },
+      "continue": true
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/404.html",
+      "status": 404
+    }
+  ]
 } 

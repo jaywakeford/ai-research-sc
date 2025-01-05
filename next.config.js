@@ -36,6 +36,11 @@ const nextConfig = {
       },
     ];
   },
+  experimental: {
+    appDir: true,
+  },
+  distDir: 'out',
+  cleanDistDir: true,
 }
 
 module.exports = nextConfig 
