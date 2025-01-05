@@ -30,5 +30,9 @@
     }
   ],
   "buildCommand": "git lfs pull && npm run build",
-  "outputDirectory": "out"
+  "outputDirectory": "out",
+  "env": {
+    "NEXT_PUBLIC_BASE_PATH": "/ai-research-sc-analytics",
+    "NODE_ENV": "production"
+  }
 } 
