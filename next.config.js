@@ -1,14 +1,13 @@
 const isProd = process.env.NODE_ENV === 'production';
+const basePath = isProd ? '/ai-research-sc-analytics' : '';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
-  basePath: isProd ? '/ai-research-sc-analytics' : '',
-  assetPrefix: isProd ? '/ai-research-sc-analytics/' : '',
+  basePath,
+  assetPrefix: isProd ? `${basePath}/` : '',
   images: {
     unoptimized: true,
-    domains: [],
-    remotePatterns: [],
   },
   trailingSlash: true,
   reactStrictMode: true,
@@ -25,7 +24,7 @@ const nextConfig = {
       test: /\.(mp3|mp4|pdf)$/i,
       type: 'asset/resource',
       generator: {
-        filename: 'media/[name][ext]',
+        filename: 'static/media/[name][ext]',
       },
     });
 

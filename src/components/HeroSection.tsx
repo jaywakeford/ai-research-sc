@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 
 interface HeroSectionProps {
   title: string;
@@ -9,10 +10,12 @@ interface HeroSectionProps {
 const HeroSection: React.FC<HeroSectionProps> = ({ title, subtitle, imagePath }) => {
   return (
     <section className="hero-section">
-      <img
+      <Image
         src={imagePath}
         alt="Hero background"
-        className="hero-image absolute inset-0 w-full h-full"
+        fill
+        className="hero-image"
+        priority
       />
       <div className="hero-content">
         <h1 className="text-5xl font-bold mb-6 gradient-text">

@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import ImagePlaceholder from './ImagePlaceholder';
 
 interface ImageCardProps {
@@ -22,10 +23,13 @@ const ImageCard: React.FC<ImageCardProps> = ({ imagePath, title, description, on
         />
       ) : (
         <div className="relative w-full aspect-[16/9]">
-          <img
+          <Image
             src={imagePath}
             alt={title}
-            className="absolute inset-0 w-full h-full object-cover rounded-lg"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            priority
+            className="object-cover rounded-lg"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent p-6 flex flex-col justify-end rounded-lg">
             <h3 className="text-xl font-semibold mb-2 text-white">{title}</h3>

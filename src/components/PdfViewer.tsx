@@ -38,8 +38,7 @@ const PdfViewer: React.FC<PdfViewerProps> = memo(({ pdfUrl }) => {
     const initWorker = async () => {
       try {
         const pdfjs = await import('react-pdf');
-        // Use CDN worker that matches the exact version
-        pdfjs.pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.pdfjs.version}/build/pdf.worker.min.js`;
+        pdfjs.pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.pdfjs.version}/pdf.worker.min.js`;
         setWorkerInitialized(true);
       } catch (err) {
         console.error('Error initializing PDF worker:', err);

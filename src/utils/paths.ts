@@ -1,38 +1,38 @@
 const getBasePath = () => {
-  const isProd = process.env.NODE_ENV === 'production';
-  return isProd ? '/ai-research-sc-analytics' : '';
+  if (typeof window === 'undefined') {
+    return process.env.NODE_ENV === 'production' ? '/ai-research-sc-analytics' : '';
+  }
+  return window.location.pathname.startsWith('/ai-research-sc-analytics') 
+    ? '/ai-research-sc-analytics' 
+    : '';
 };
 
 export const getMediaPath = (path: string): string => {
   const basePath = getBasePath();
-  const cleanPath = path.startsWith('/') ? path.slice(1) : path;
-  return `${basePath}/${cleanPath}`;
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  return `${basePath}${cleanPath}`;
 };
 
 export const getImagePath = (path: string): string => {
   const basePath = getBasePath();
-  const cleanPath = path.startsWith('/') ? path.slice(1) : path;
-  const fullPath = cleanPath.startsWith('images/') ? cleanPath : `images/${cleanPath}`;
-  return `${basePath}/${fullPath}`;
+  const cleanPath = path.startsWith('/') ? path : `/images/${path}`;
+  return `${basePath}${cleanPath}`;
 };
 
 export const getPdfPath = (path: string): string => {
   const basePath = getBasePath();
-  const cleanPath = path.startsWith('/') ? path.slice(1) : path;
-  const fullPath = cleanPath.startsWith('media/pdfs/') ? cleanPath : `media/pdfs/${cleanPath}`;
-  return `${basePath}/${fullPath}`;
+  const cleanPath = path.startsWith('/') ? path : `/pdfs/${path}`;
+  return `${basePath}${cleanPath}`;
 };
 
 export const getAudioPath = (path: string): string => {
   const basePath = getBasePath();
-  const cleanPath = path.startsWith('/') ? path.slice(1) : path;
-  const fullPath = cleanPath.startsWith('media/audio/') ? cleanPath : `media/audio/${cleanPath}`;
-  return `${basePath}/${fullPath}`;
+  const cleanPath = path.startsWith('/') ? path : `/audio/${path}`;
+  return `${basePath}${cleanPath}`;
 };
 
 export const getVideoPath = (path: string): string => {
   const basePath = getBasePath();
-  const cleanPath = path.startsWith('/') ? path.slice(1) : path;
-  const fullPath = cleanPath.startsWith('media/videos/') ? cleanPath : `media/videos/${cleanPath}`;
-  return `${basePath}/${fullPath}`;
+  const cleanPath = path.startsWith('/') ? path : `/videos/${path}`;
+  return `${basePath}${cleanPath}`;
 }; 
