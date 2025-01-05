@@ -5,7 +5,8 @@ import HeroSection from '@/components/HeroSection';
 import ImageCard from '@/components/ImageCard';
 import MetricsSection from '@/components/MetricsSection';
 import AudioPlayer from '@/components/AudioPlayer';
-import { getImagePath } from '@/utils/paths';
+
+const basePath = process.env.NODE_ENV === 'production' ? '/ai-research-sc-analytics' : '';
 
 export default function Home() {
   return (
@@ -13,7 +14,7 @@ export default function Home() {
       <HeroSection
         title="AI Innovation & Operational Excellence"
         subtitle="Bridging advanced artificial intelligence with enterprise operations through innovative research and practical implementation. Specializing in computer vision, GPT-4 integration, and large-scale operational transformation."
-        imagePath="/images/homepage.jpg"
+        imagePath={`${basePath}/images/homepage.jpg`}
       />
       
       <section className="py-16">
@@ -22,7 +23,7 @@ export default function Home() {
             <div className="w-full md:w-1/3">
               <div className="rounded-full overflow-hidden aspect-square shadow-xl border-4 border-indigo-500/20">
                 <img 
-                  src={getImagePath('/images/selfie2.JPEG')}
+                  src={`${basePath}/images/selfie2.JPEG`}
                   alt="Profile"
                   className="w-full h-full object-cover"
                 />
@@ -56,7 +57,7 @@ export default function Home() {
       <section className="py-8">
         <div className="container mx-auto px-4">
           <AudioPlayer
-            src="/media/audio/jw-overview.mp3"
+            src={`${basePath}/media/audio/jw-overview.mp3`}
             title="Overview Audio"
           />
         </div>
@@ -69,17 +70,17 @@ export default function Home() {
           <h2 className="text-3xl font-bold mb-8 gradient-text">Core Expertise</h2>
           <div className="image-grid">
             <ImageCard
-              imagePath="/images/physics-7249773_1280.jpg"
+              imagePath={`${basePath}/images/physics-7249773_1280.jpg`}
               title="Advanced AI Systems"
               description="Computer vision with GPT-4 integration, distributed NLP frameworks, and innovative machine learning solutions"
             />
             <ImageCard
-              imagePath="/images/warehouse.jpg"
+              imagePath={`${basePath}/images/warehouse.jpg`}
               title="Enterprise Operations"
               description="Large-scale deployment of Cloud POS systems, operational transformation, and process optimization"
             />
             <ImageCard
-              imagePath="/images/bi.jpg"
+              imagePath={`${basePath}/images/bi.jpg`}
               title="Data Analytics & Mapping"
               description="QGIS-based mapping solutions, enterprise-wide analytics initiatives, and business intelligence"
             />
@@ -93,7 +94,7 @@ export default function Home() {
             <div className="w-full md:w-1/2">
               <div className="relative aspect-[16/9] rounded-lg overflow-hidden">
                 <img 
-                  src={getImagePath('/images/logistics.jpg')}
+                  src={`${basePath}/images/logistics.jpg`}
                   alt="Supply Chain Operations"
                   className="object-cover w-full h-full"
                 />
