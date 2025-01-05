@@ -4,8 +4,6 @@ import React, { useState, useEffect, useCallback, memo } from 'react';
 import dynamic from 'next/dynamic';
 import { getPdfPath } from '@/utils/paths';
 
-const basePath = process.env.NODE_ENV === 'production' ? '/ai-research-sc-analytics' : '';
-
 // Dynamically import PDF components with loading fallback
 const Document = dynamic(
   () => import('react-pdf').then(mod => mod.Document),
@@ -40,8 +38,8 @@ const PdfViewer: React.FC<PdfViewerProps> = memo(({ pdfUrl }) => {
     const initWorker = async () => {
       try {
         const pdfjs = await import('react-pdf');
-        // Use local worker file with base path
-        pdfjs.pdfjs.GlobalWorkerOptions.workerSrc = `${basePath}/pdf.worker.min.js`;
+        // Use CDN worker that matches the exact version
+        pdfjs.pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.pdfjs.version}/build/pdf.worker.min.js`;
         setWorkerInitialized(true);
       } catch (err) {
         console.error('Error initializing PDF worker:', err);
