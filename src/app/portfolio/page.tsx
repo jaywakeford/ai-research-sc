@@ -1,32 +1,31 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
-import { getImagePath } from '@/utils/paths';
+import ImageCard from '@/components/ImageCard';
 
 const portfolioItems = [
   {
     title: "AI Research & Development",
     description: "Leading research initiatives in computer vision and GPT-4 integration",
-    image: "/images/ai_network.jpg",
+    imagePath: "/images/ai_network.jpg",
     tags: ["AI", "Computer Vision", "GPT-4", "Research"]
   },
   {
     title: "Supply Chain Analytics",
     description: "End-to-end supply chain optimization and analytics solutions",
-    image: "/images/logistics.jpg",
+    imagePath: "/images/logistics.jpg",
     tags: ["Analytics", "Supply Chain", "Optimization"]
   },
   {
     title: "Business Intelligence",
     description: "Enterprise-wide BI implementation and analytics frameworks",
-    image: "/images/bi.jpg",
+    imagePath: "/images/bi.jpg",
     tags: ["BI", "Data Analytics", "Visualization"]
   },
   {
     title: "Warehouse Operations",
     description: "Large-scale warehouse management and optimization systems",
-    image: "/images/warehouse.jpg",
+    imagePath: "/images/warehouse.jpg",
     tags: ["Operations", "Management", "Optimization"]
   }
 ];
@@ -43,20 +42,13 @@ export default function PortfolioPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {portfolioItems.map((item, index) => (
             <div key={index} className="glass-card overflow-hidden">
-              <div className="relative aspect-[16/9]">
-                <Image
-                  src={getImagePath(item.image)}
-                  alt={item.title}
-                  fill
-                  priority
-                  className="object-cover"
-                  unoptimized
-                />
-              </div>
+              <ImageCard
+                imagePath={item.imagePath}
+                title={item.title}
+                description={item.description}
+              />
               <div className="p-6">
-                <h3 className="text-2xl font-bold mb-2 gradient-text">{item.title}</h3>
-                <p className="text-gray-300 mb-4">{item.description}</p>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2 mt-4">
                   {item.tags.map((tag, tagIndex) => (
                     <span 
                       key={tagIndex}
