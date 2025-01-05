@@ -12,7 +12,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   experimental: {
-    optimizeCss: true,
+    optimizeCss: true
   },
   webpack: (config, { isServer }) => {
     // Handle canvas dependency
