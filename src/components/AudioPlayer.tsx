@@ -21,17 +21,20 @@ export default function AudioPlayer({ src, title }: AudioPlayerProps) {
   }, [fullPath]);
 
   const handleError = (e: any) => {
-    console.error('Audio loading error for path:', fullPath);
+    console.error('Audio loading error:', e);
+    console.error('Audio path:', fullPath);
     setError('Failed to load audio');
     setLoading(false);
   };
 
   const handleLoadStart = () => {
+    console.log('Audio loading started:', fullPath);
     setLoading(true);
     setError(null);
   };
 
   const handleCanPlay = () => {
+    console.log('Audio can play:', fullPath);
     setLoading(false);
     setError(null);
   };
@@ -40,7 +43,12 @@ export default function AudioPlayer({ src, title }: AudioPlayerProps) {
     <div className="glass-card p-4">
       <div className="mb-2">
         <h3 className="text-lg font-semibold">{title}</h3>
-        {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+        {error && (
+          <div className="text-red-500 text-sm mt-1">
+            <p>{error}</p>
+            <p className="text-xs mt-1">Path: {fullPath}</p>
+          </div>
+        )}
       </div>
       <H5AudioPlayer
         ref={playerRef}
