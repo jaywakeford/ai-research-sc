@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import ImagePlaceholder from './ImagePlaceholder';
+import { getImagePath } from '@/utils/paths';
 
 interface ImageCardProps {
   imagePath: string;
@@ -10,7 +11,7 @@ interface ImageCardProps {
 }
 
 const ImageCard: React.FC<ImageCardProps> = ({ imagePath, title, description, onClick }) => {
-  const isPlaceholder = !imagePath.startsWith('/') || !imagePath;
+  const isPlaceholder = !imagePath;
 
   return (
     <div className="image-card cursor-pointer" onClick={onClick}>
@@ -24,7 +25,7 @@ const ImageCard: React.FC<ImageCardProps> = ({ imagePath, title, description, on
       ) : (
         <div className="relative w-full aspect-[16/9]">
           <Image
-            src={imagePath}
+            src={getImagePath(imagePath)}
             alt={title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

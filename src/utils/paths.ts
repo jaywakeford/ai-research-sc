@@ -10,9 +10,8 @@ export const getMediaPath = (path: string): string => {
 };
 
 export const getImagePath = (path: string): string => {
-  const basePath = getBasePath();
-  const cleanPath = path.startsWith('/') ? path : `/images/${path}`;
-  return `${basePath}${cleanPath}`;
+  const basePath = process.env.NODE_ENV === 'production' ? '/ai-research-sc-analytics' : '';
+  return `${basePath}${path}`;
 };
 
 export const getPdfPath = (path: string): string => {

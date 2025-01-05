@@ -5,6 +5,7 @@ import HeroSection from '@/components/HeroSection';
 import ImageCard from '@/components/ImageCard';
 import MetricsSection from '@/components/MetricsSection';
 import AudioPlayer from '@/components/AudioPlayer';
+import { getImagePath } from '@/utils/paths';
 
 export default function Home() {
   return (
@@ -21,7 +22,7 @@ export default function Home() {
             <div className="w-full md:w-1/3">
               <div className="rounded-full overflow-hidden aspect-square shadow-xl border-4 border-indigo-500/20">
                 <img 
-                  src="/images/selfie2.JPEG" 
+                  src={getImagePath('/images/selfie2.JPEG')}
                   alt="Profile"
                   className="w-full h-full object-cover"
                 />
@@ -92,7 +93,7 @@ export default function Home() {
             <div className="w-full md:w-1/2">
               <div className="relative aspect-[16/9] rounded-lg overflow-hidden">
                 <img 
-                  src="/images/logistics.jpg" 
+                  src={getImagePath('/images/logistics.jpg')}
                   alt="Supply Chain Operations"
                   className="object-cover w-full h-full"
                 />
