@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PdfViewer from '@/components/PdfViewer';
 import AudioPlayer from '@/components/AudioPlayer';
 
@@ -41,30 +41,6 @@ const researchPapers = [
 
 export default function ResearchPage() {
   const [selectedPaper, setSelectedPaper] = useState(researchPapers[0]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [pdfStatus, setPdfStatus] = useState<Record<string, boolean>>({});
-
-  useEffect(() => {
-    setIsLoading(true);
-    // Check if PDFs are accessible
-    Promise.all(
-      researchPapers.map(paper =>
-        fetch(paper.pdfUrl)
-          .then(res => ({
-            id: paper.id,
-            ok: res.ok
-          }))
-      )
-    ).then(results => {
-      const status = results.reduce((acc, { id, ok }) => ({
-        ...acc,
-        [id]: ok
-      }), {});
-      setPdfStatus(status);
-      setIsLoading(false);
-      console.log('PDF accessibility check:', status);
-    });
-  }, []);
 
   return (
     <main className="min-h-screen py-16">
