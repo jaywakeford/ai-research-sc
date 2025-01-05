@@ -10,6 +10,7 @@ permissions:
   pages: write
   id-token: write
 
+# Force a fresh deployment every time
 concurrency:
   group: "pages"
   cancel-in-progress: true
@@ -33,21 +34,25 @@ jobs:
           node-version: "18"
           cache: 'npm'
           
-      - name: Clean cache and install
+      - name: Clear all caches
         run: |
           npm cache clean --force
-          rm -rf node_modules
           rm -rf .next
           rm -rf out
-          npm ci --legacy-peer-deps
+          rm -rf node_modules
+          rm -rf .cache
+          
+      - name: Fresh install
+        run: npm ci --legacy-peer-deps
           
       - name: Setup Pages
         uses: actions/configure-pages@v4
         
-      - name: Build
+      - name: Build with clean environment
         run: |
           npm run clean
           NODE_ENV=production npm run build
+          rm -rf out/images
           cp -r public/* out/
         env:
           NODE_ENV: production
