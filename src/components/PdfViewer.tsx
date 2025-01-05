@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback, memo } from 'react';
 import dynamic from 'next/dynamic';
-import { getMediaPath } from '@/utils/paths';
+import { getPdfPath } from '@/utils/paths';
 
 // Dynamically import PDF components with loading fallback
 const Document = dynamic(
@@ -31,7 +31,7 @@ const PdfViewer: React.FC<PdfViewerProps> = memo(({ pdfUrl }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [workerInitialized, setWorkerInitialized] = useState<boolean>(false);
-  const fullPath = getMediaPath(pdfUrl);
+  const fullPath = getPdfPath(pdfUrl);
 
   // Initialize PDF.js worker
   useEffect(() => {

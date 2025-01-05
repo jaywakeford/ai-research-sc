@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
+import { getVideoPath } from '@/utils/paths';
 
 interface VideoPlayerProps {
   videoUrl: string;
@@ -20,7 +21,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   const videoRef = useRef<HTMLVideoElement>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const fullPath = videoUrl.startsWith('/') ? videoUrl : `/${videoUrl}`;
+  const fullPath = getVideoPath(videoUrl);
 
   const handleLoadedData = () => {
     setLoading(false);

@@ -3,6 +3,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import H5AudioPlayer, { RHAP_UI } from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
+import { getAudioPath } from '@/utils/paths';
 
 interface AudioPlayerProps {
   src: string;
@@ -13,7 +14,7 @@ export default function AudioPlayer({ src, title }: AudioPlayerProps) {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const playerRef = useRef<H5AudioPlayer>(null);
-  const fullPath = src.startsWith('/') ? src : `/${src}`;
+  const fullPath = getAudioPath(src);
 
   useEffect(() => {
     console.log('Audio player mounted with path:', fullPath);
