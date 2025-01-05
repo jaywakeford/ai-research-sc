@@ -27,21 +27,12 @@ const nextConfig = {
       config.resolve.alias['pdfjs-dist'] = 'pdfjs-dist/webpack';
     }
 
-    // Add rule for media files
-    config.module.rules.push({
-      test: /\.(mp3|mp4|pdf)$/i,
-      type: 'asset/resource',
-      generator: {
-        filename: 'static/media/[name][ext]',
-        publicPath: `${basePath}/_next/`,
-      },
-    });
-
     return config;
   },
   // Ensure static files are copied
   experimental: {
     outputFileTracingRoot: process.cwd(),
+    outputStandalone: true,
   },
   poweredByHeader: false,
   generateBuildId: async () => {

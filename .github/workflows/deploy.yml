@@ -6,12 +6,16 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -29,6 +33,9 @@ jobs:
           node-version: "18"
           cache: 'npm'
           
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+          
       - name: Install dependencies
         run: npm install
         
@@ -36,58 +43,29 @@ jobs:
         run: |
           echo "Node version: $(node -v)"
           echo "NPM version: $(npm -v)"
-          echo "Current directory: $(pwd)"
           echo "Directory contents:"
           ls -la
-          echo "Public directory contents:"
-          ls -la public || echo "No public directory found"
           
       - name: Build
         run: |
-          echo "Starting build process..."
           npm run clean
-          echo "Clean completed, starting Next.js build..."
           npm run build
-          echo "Build completed, checking output directories..."
-          ls -la .next
-          ls -la out
-          echo "Copying static files..."
-          cp -r .next/static out/_next/static || echo "No static files to copy"
         env:
           NODE_ENV: production
           NEXT_PUBLIC_BASE_PATH: /ai-research-sc-analytics
         
-      - name: Copy media files
-        run: |
-          echo "Creating media directory..."
-          mkdir -p ./out/media
-          echo "Copying media files..."
-          cp -r ./public/media/* ./out/media/ || echo "No media files to copy"
-          echo "Media directory contents:"
-          ls -la ./out/media || echo "Media directory is empty"
-          
-      - name: Verify output directory
-        run: |
-          echo "Output directory structure:"
-          tree ./out || ls -R ./out
-          echo "Checking for critical files..."
-          echo "index.html exists: $(test -f ./out/index.html && echo 'Yes' || echo 'No')"
-          echo "/_next exists: $(test -d ./out/_next && echo 'Yes' || echo 'No')"
-          echo "/media exists: $(test -d ./out/media && echo 'Yes' || echo 'No')"
-          echo "File contents of index.html:"
-          head -n 20 ./out/index.html || echo "Could not read index.html"
-          
-      - name: Fix permissions
-        run: |
-          echo "Setting permissions..."
-          chmod -R a+rx ./out
-          echo "Final output directory permissions:"
-          ls -la ./out
-          
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./out
-          force_orphan: true
-          enable_jekyll: false 
+          path: ./out
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4 
