@@ -1,40 +1,37 @@
 {
+  "version": 2,
   "git": {
     "lfs": true
   },
-  "headers": [
+  "builds": [
     {
-      "source": "/media/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        },
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
-        },
-        {
-          "key": "Access-Control-Allow-Methods",
-          "value": "GET, OPTIONS"
-        },
-        {
-          "key": "Access-Control-Allow-Headers",
-          "value": "Content-Type, Range"
-        },
-        {
-          "key": "Accept-Ranges",
-          "value": "bytes"
-        }
-      ]
+      "src": "next.config.js",
+      "use": "@vercel/next"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/media/(.*)",
+      "headers": {
+        "Cache-Control": "public, max-age=31536000, immutable",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Range",
+        "Accept-Ranges": "bytes"
+      }
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/"
     }
   ],
   "buildCommand": "npm run build",
   "installCommand": "npm install",
-  "outputDirectory": "out",
+  "outputDirectory": ".next",
   "framework": "nextjs",
   "env": {
     "NEXT_PUBLIC_BASE_PATH": "/ai-research-sc-analytics",
-    "NODE_ENV": "production"
+    "NODE_ENV": "production",
+    "NEXT_TELEMETRY_DISABLED": "1"
   }
 } 

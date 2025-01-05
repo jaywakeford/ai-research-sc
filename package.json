@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development NODE_TLS_REJECT_UNAUTHORIZED=0 node server.js",
-    "prebuild": "git lfs install",
+    "dev": "next dev",
+    "prebuild": "git lfs install && rimraf .next",
     "build": "next build",
-    "start": "cross-env NODE_ENV=production node server.js",
-    "vercel-build": "next build",
-    "lint": "next lint"
+    "start": "next start",
+    "lint": "next lint",
+    "clean": "rimraf .next out",
+    "vercel-build": "npm run clean && next build"
   },
   "dependencies": {
     "@react-pdf/renderer": "3.1.14",
@@ -40,6 +41,6 @@
     "typescript": "^5"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": "18.x"
   }
 }
