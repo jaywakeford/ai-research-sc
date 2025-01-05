@@ -61,8 +61,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
             preload="metadata"
             onLoadedData={handleLoadedData}
             onError={handleError}
+            src={fullPath}
           >
-            <source src={fullPath} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         )}

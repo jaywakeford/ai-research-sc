@@ -46,7 +46,7 @@ const PdfViewer: React.FC<PdfViewerProps> = memo(({ pdfUrl }) => {
           const workerPath = process.env.NODE_ENV === 'production' 
             ? '/ai-research-sc-analytics/pdf.worker.min.js'
             : '/pdf.worker.min.js';
-          pdfjs.pdfjs.GlobalWorkerOptions.workerSrc = workerPath;
+          pdfjs.pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.pdfjs.version}/pdf.worker.min.js`;
         }
         setWorkerInitialized(true);
       } catch (err) {

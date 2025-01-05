@@ -8,7 +8,8 @@ export const getMediaPath = (path: string): string => {
   if (path.startsWith('http://') || path.startsWith('https://')) {
     return path;
   }
-  return `${basePath}${path}`;
+  const cleanPath = path.startsWith('/media/') ? path : `/media/${path.replace(/^\//, '')}`;
+  return `${basePath}${cleanPath}`;
 };
 
 export const getImagePath = (path: string): string => {
@@ -16,7 +17,8 @@ export const getImagePath = (path: string): string => {
   if (path.startsWith('http://') || path.startsWith('https://')) {
     return path;
   }
-  return `${basePath}${path}`;
+  const cleanPath = path.startsWith('/images/') ? path : `/images/${path.replace(/^\//, '')}`;
+  return `${basePath}${cleanPath}`;
 };
 
 export const getPdfPath = (path: string): string => {
@@ -24,7 +26,8 @@ export const getPdfPath = (path: string): string => {
   if (path.startsWith('http://') || path.startsWith('https://')) {
     return path;
   }
-  return `${basePath}${path}`;
+  const cleanPath = path.startsWith('/media/pdfs/') ? path : `/media/pdfs/${path.replace(/^\//, '')}`;
+  return `${basePath}${cleanPath}`;
 };
 
 export const getAudioPath = (path: string): string => {
@@ -32,7 +35,8 @@ export const getAudioPath = (path: string): string => {
   if (path.startsWith('http://') || path.startsWith('https://')) {
     return path;
   }
-  return `${basePath}${path}`;
+  const cleanPath = path.startsWith('/media/audio/') ? path : `/media/audio/${path.replace(/^\//, '')}`;
+  return `${basePath}${cleanPath}`;
 };
 
 export const getVideoPath = (path: string): string => {
@@ -40,5 +44,6 @@ export const getVideoPath = (path: string): string => {
   if (path.startsWith('http://') || path.startsWith('https://')) {
     return path;
   }
-  return `${basePath}${path}`;
+  const cleanPath = path.startsWith('/media/videos/') ? path : `/media/videos/${path.replace(/^\//, '')}`;
+  return `${basePath}${cleanPath}`;
 }; 
