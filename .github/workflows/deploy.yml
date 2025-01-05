@@ -45,11 +45,19 @@ jobs:
           echo "NPM version: $(npm -v)"
           echo "Directory contents:"
           ls -la
+          echo "Public directory contents:"
+          ls -la public
+          echo "Environment variables:"
+          env | grep NEXT_
           
       - name: Build
         run: |
           npm run clean
           npm run build
+          echo "Build output contents:"
+          ls -la out
+          echo "Checking for index.html:"
+          cat out/index.html | head -n 10
         env:
           NODE_ENV: production
           NEXT_PUBLIC_BASE_PATH: /ai-research-sc-analytics
