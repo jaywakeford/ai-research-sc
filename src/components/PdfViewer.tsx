@@ -4,6 +4,8 @@ import React, { useState, useEffect, useCallback, memo } from 'react';
 import dynamic from 'next/dynamic';
 import { getPdfPath } from '@/utils/paths';
 
+const basePath = process.env.NODE_ENV === 'production' ? '/ai-research-sc-analytics' : '';
+
 // Dynamically import PDF components with loading fallback
 const Document = dynamic(
   () => import('react-pdf').then(mod => mod.Document),
@@ -33,21 +35,13 @@ const PdfViewer: React.FC<PdfViewerProps> = memo(({ pdfUrl }) => {
   const [workerInitialized, setWorkerInitialized] = useState<boolean>(false);
   const fullPath = getPdfPath(pdfUrl);
 
-  useEffect(() => {
-    console.log('Loading PDF from path:', fullPath);
-  }, [fullPath]);
-
   // Initialize PDF.js worker
   useEffect(() => {
     const initWorker = async () => {
       try {
         const pdfjs = await import('react-pdf');
-        if (typeof window !== 'undefined') {
-          const workerPath = process.env.NODE_ENV === 'production' 
-            ? '/ai-research-sc-analytics/pdf.worker.min.js'
-            : '/pdf.worker.min.js';
-          pdfjs.pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.pdfjs.version}/pdf.worker.min.js`;
-        }
+        // Use local worker file with base path
+        pdfjs.pdfjs.GlobalWorkerOptions.workerSrc = `${basePath}/pdf.worker.min.js`;
         setWorkerInitialized(true);
       } catch (err) {
         console.error('Error initializing PDF worker:', err);
