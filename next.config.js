@@ -36,9 +36,6 @@ const nextConfig = {
       },
     ];
   },
-  experimental: {
-    appDir: true,
-  },
   distDir: 'out',
   cleanDistDir: true,
   poweredByHeader: false,
