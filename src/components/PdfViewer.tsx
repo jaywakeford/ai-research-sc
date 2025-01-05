@@ -11,13 +11,6 @@ const Page = dynamic(() => import('react-pdf').then(mod => mod.Page), {
   ssr: false
 });
 
-// Configure PDF.js worker
-useEffect(() => {
-  import('react-pdf').then(mod => {
-    mod.pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${mod.pdfjs.version}/pdf.worker.min.js`;
-  });
-}, []);
-
 interface PdfViewerProps {
   pdfUrl: string;
 }
@@ -27,6 +20,13 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Configure PDF.js worker
+  useEffect(() => {
+    import('react-pdf').then(mod => {
+      mod.pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${mod.pdfjs.version}/pdf.worker.min.js`;
+    });
+  }, []);
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
     setNumPages(numPages);
