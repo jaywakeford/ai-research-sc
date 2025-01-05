@@ -13,7 +13,6 @@ const nextConfig = {
   swcMinify: true,
   experimental: {
     optimizeCss: true,
-    legacyBrowsers: false,
   },
   webpack: (config, { isServer }) => {
     // Handle canvas dependency
@@ -33,15 +32,6 @@ const nextConfig = {
   poweredByHeader: false,
   generateBuildId: async () => {
     return 'build-' + Date.now();
-  },
-  // Ensure routes manifest is generated
-  exportPathMap: async function () {
-    return {
-      '/': { page: '/' },
-      '/research': { page: '/research' },
-      '/portfolio': { page: '/portfolio' },
-      '/supply-chain': { page: '/supply-chain' },
-    };
   }
 }
 
