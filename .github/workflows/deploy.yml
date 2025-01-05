@@ -33,23 +33,21 @@ jobs:
           node-version: "18"
           cache: 'npm'
           
-      - name: Clean npm cache
-        run: npm cache clean --force
-          
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-          
-      - name: Install dependencies
+      - name: Clean cache and install
         run: |
+          npm cache clean --force
           rm -rf node_modules
           rm -rf .next
           rm -rf out
           npm ci --legacy-peer-deps
+          
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
         
       - name: Build
         run: |
           npm run clean
-          npm run build
+          NODE_ENV=production npm run build
           cp -r public/* out/
         env:
           NODE_ENV: production
