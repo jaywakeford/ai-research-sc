@@ -34,30 +34,31 @@ jobs:
           node-version: "18"
           cache: 'npm'
           
-      - name: Clear all caches
+      - name: Install dependencies
         run: |
           npm cache clean --force
-          rm -rf .next
-          rm -rf out
-          rm -rf node_modules
-          rm -rf .cache
-          
-      - name: Fresh install
-        run: npm ci --legacy-peer-deps
+          npm ci --legacy-peer-deps
           
       - name: Setup Pages
         uses: actions/configure-pages@v4
         
-      - name: Build with clean environment
+      - name: Build
         run: |
-          npm run clean
-          NODE_ENV=production npm run build
-          rm -rf out/images
-          cp -r public/* out/
+          rm -rf .next
+          rm -rf out
+          npm run build
+          touch out/.nojekyll
         env:
           NODE_ENV: production
           NEXT_PUBLIC_BASE_PATH: /ai-research-sc-analytics
           CI: false
+
+      - name: Copy static files
+        run: |
+          cp -r public/* out/
+          
+      - name: List output directory
+        run: ls -la out/
         
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
