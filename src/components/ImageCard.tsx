@@ -32,6 +32,7 @@ const ImageCard: React.FC<ImageCardProps> = ({ imagePath, title, description, on
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             priority
             className="object-cover rounded-lg"
+            unoptimized
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent p-6 flex flex-col justify-end rounded-lg">
             <h3 className="text-xl font-semibold mb-2 text-white">{title}</h3>
