@@ -36,6 +36,7 @@ jobs:
         run: |
           npm run clean
           npm run build
+          cp -r .next/static out/_next/static
         env:
           NODE_ENV: production
           NEXT_PUBLIC_BASE_PATH: /ai-research-sc-analytics
@@ -44,6 +45,12 @@ jobs:
         run: |
           mkdir -p ./out/media
           cp -r ./public/media/* ./out/media/
+          
+      - name: Verify output directory
+        run: |
+          ls -la ./out
+          echo "Checking for index.html..."
+          test -f ./out/index.html || exit 1
           
       - name: Fix permissions
         run: |
