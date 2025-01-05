@@ -41,6 +41,10 @@ const nextConfig = {
   },
   distDir: 'out',
   cleanDistDir: true,
+  poweredByHeader: false,
+  generateBuildId: async () => {
+    return 'build-' + Date.now();
+  }
 }
 
 module.exports = nextConfig 

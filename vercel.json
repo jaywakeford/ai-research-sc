@@ -31,6 +31,7 @@
   ],
   "buildCommand": "git lfs pull && npm run build",
   "outputDirectory": "out",
+  "framework": "nextjs",
   "env": {
     "NEXT_PUBLIC_BASE_PATH": "/ai-research-sc-analytics",
     "NODE_ENV": "production"
@@ -43,11 +44,6 @@
     },
     {
       "handle": "filesystem"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/404.html",
-      "status": 404
     }
   ]
 } 
