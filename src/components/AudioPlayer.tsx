@@ -14,14 +14,30 @@ export default function AudioPlayer({ src, title }: AudioPlayerProps) {
   const [loading, setLoading] = useState(true);
   const playerRef = useRef<H5AudioPlayer>(null);
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+  const fullPath = `${basePath}${src}`;
 
   useEffect(() => {
+    console.log('Audio player mounted with path:', fullPath);
     setLoading(false);
-  }, []);
+  }, [fullPath]);
 
-  const handleError = () => {
-    setError('Failed to load audio');
+  const handleError = (e: any) => {
+    console.error('Audio loading error:', e);
+    console.error('Audio element:', playerRef.current);
+    console.error('Attempted path:', fullPath);
+    setError('Failed to load audio. Please check console for details.');
     setLoading(false);
+  };
+
+  const handleLoadStart = () => {
+    console.log('Audio loading started');
+    setLoading(true);
+  };
+
+  const handleCanPlay = () => {
+    console.log('Audio can play');
+    setLoading(false);
+    setError(null);
   };
 
   return (
@@ -29,7 +45,12 @@ export default function AudioPlayer({ src, title }: AudioPlayerProps) {
       <h3 className="text-xl font-semibold mb-4 gradient-text">{title}</h3>
       <div className="space-y-4">
         {error ? (
-          <div className="text-red-500">{error}</div>
+          <div className="text-red-500">
+            {error}
+            <div className="text-sm mt-2">
+              Attempted to load: {fullPath}
+            </div>
+          </div>
         ) : (
           <div className="relative">
             {loading && (
@@ -39,8 +60,10 @@ export default function AudioPlayer({ src, title }: AudioPlayerProps) {
             )}
             <H5AudioPlayer
               ref={playerRef}
-              src={`${basePath}${src}`}
+              src={fullPath}
               onError={handleError}
+              onLoadStart={handleLoadStart}
+              onCanPlay={handleCanPlay}
               autoPlay={false}
               autoPlayAfterSrcChange={false}
               showJumpControls={true}
