@@ -38,8 +38,8 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     // Match all files in the public directory
-    '/pdfs/:path*',
-    '/audio/:path*',
-    '/videos/:path*',
+    '/media/pdfs/:path*',
+    '/media/audio/:path*',
+    '/media/videos/:path*',
   ],
 }; 

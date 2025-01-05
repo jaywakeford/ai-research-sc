@@ -55,7 +55,7 @@ export default function Home() {
       <section className="py-8">
         <div className="container mx-auto px-4">
           <AudioPlayer
-            src="/audio/jw-overview.mp3"
+            src="/media/audio/jw-overview.mp3"
             title="Overview Audio"
           />
         </div>
