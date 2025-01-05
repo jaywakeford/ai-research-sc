@@ -5,13 +5,11 @@
   "homepage": "https://jaywakeford.github.io/ai-research-sc-analytics",
   "scripts": {
     "dev": "next dev",
-    "prebuild": "git lfs install && rimraf .next out",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "clean": "rimraf .next out",
     "export": "next export",
-    "deploy": "gh-pages -d out"
+    "deploy": "gh-pages -d out",
+    "clean": "rimraf .next out"
   },
   "dependencies": {
     "@react-pdf/renderer": "3.1.14",
