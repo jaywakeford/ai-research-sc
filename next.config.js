@@ -7,6 +7,8 @@ const nextConfig = {
   assetPrefix: isProd ? '/ai-research-sc-analytics/' : '',
   images: {
     unoptimized: true,
+    domains: [],
+    remotePatterns: [],
   },
   trailingSlash: true,
   reactStrictMode: true,
