@@ -37,18 +37,19 @@ jobs:
       - name: Install dependencies
         run: |
           npm cache clean --force
+          rm -rf node_modules
+          rm -rf .next
+          rm -rf out
           npm ci --legacy-peer-deps
           
       - name: Setup Pages
         uses: actions/configure-pages@v4
         
-      - name: Clean previous builds
+      - name: Build
         run: |
-          npm run clean
-          rm -rf node_modules/.cache
-          
-      - name: Build Next.js app
-        run: npm run build
+          echo "Build started at $(date)"
+          npm run build
+          echo "Build completed at $(date)"
         env:
           NODE_ENV: production
           NEXT_PUBLIC_BASE_PATH: /ai-research-sc-analytics
@@ -58,6 +59,7 @@ jobs:
         run: |
           touch out/.nojekyll
           cp -r public/* out/
+          echo "Files copied at $(date)" > out/build-info.txt
           
       - name: Verify output directory
         run: |
@@ -65,9 +67,7 @@ jobs:
           ls -la out/
           echo "Contents of out/images directory:"
           ls -la out/images/
-          echo "Contents of out/media directory:"
-          ls -la out/media/
-        
+          
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
