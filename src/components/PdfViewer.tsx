@@ -1,10 +1,22 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Document, Page, pdfjs } from 'react-pdf';
+import React, { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
+
+const Document = dynamic(() => import('react-pdf').then(mod => mod.Document), {
+  ssr: false
+});
+
+const Page = dynamic(() => import('react-pdf').then(mod => mod.Page), {
+  ssr: false
+});
 
 // Configure PDF.js worker
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+useEffect(() => {
+  import('react-pdf').then(mod => {
+    mod.pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${mod.pdfjs.version}/pdf.worker.min.js`;
+  });
+}, []);
 
 interface PdfViewerProps {
   pdfUrl: string;
