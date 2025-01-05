@@ -17,6 +17,16 @@ const nextConfig = {
       ...config.resolve.fallback,
       canvas: false,
     };
+
+    // Handle media files
+    config.module.rules.push({
+      test: /\.(mp3|mp4|pdf)$/i,
+      type: 'asset/resource',
+      generator: {
+        filename: 'media/[name][ext]',
+      },
+    });
+
     return config;
   }
 };
