@@ -22,43 +22,40 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
-          clean: true
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "18"
+          node-version: "18.17.0"
           cache: npm
-
-      - name: Clean npm cache
-        run: npm cache clean --force
-
-      - name: Install dependencies
-        run: |
-          rm -rf node_modules
-          rm -rf .next
-          npm ci
-        env:
-          CI: true
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
         with:
           static_site_generator: next
 
+      - name: Install dependencies
+        run: |
+          npm ci
+        env:
+          CI: true
+          NODE_ENV: production
+
       - name: Build with Next.js
         run: |
           npm run build
           touch out/.nojekyll
+          cp -r public/* out/ || true
         env:
           NODE_ENV: production
           NEXT_TELEMETRY_DISABLED: 1
+          CI: true
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
@@ -69,7 +66,7 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: build
     steps:
       - name: Deploy to GitHub Pages
