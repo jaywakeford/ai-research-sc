@@ -14,7 +14,7 @@ permissions:
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
 concurrency:
   group: "pages"
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 env:
   NODE_ENV: production
@@ -26,11 +26,22 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Debug Info
+        run: |
+          echo "Current branch: $(git branch --show-current)"
+          echo "Git status:"
+          git status
+          echo "Directory contents:"
+          ls -la
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: "18.17.0"
+          cache: 'npm'
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -39,8 +50,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm install
-          npm install -D tailwindcss postcss autoprefixer
+          npm ci
         env:
           CI: true
           NODE_ENV: production
@@ -49,6 +59,8 @@ jobs:
         run: |
           npm run build
           touch out/.nojekyll
+          echo "Build output contents:"
+          ls -la out/
         env:
           CI: true
           NODE_ENV: production
