@@ -33,28 +33,26 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "18"
-          cache: 'npm'
           
-      - name: Clean and Install
+      - name: Clean environment
         run: |
-          echo "Starting clean installation at $(date)"
-          rm -rf .git/index.lock
-          git clean -fdx
-          npm cache clean --force
-          rm -rf node_modules
+          echo "Cleaning environment..."
           rm -rf .next
           rm -rf out
-          npm ci --legacy-peer-deps
-          echo "Installation completed at $(date)"
+          rm -rf node_modules/.cache
           
+      - name: Install dependencies
+        run: |
+          echo "Installing dependencies..."
+          npm ci
+        
       - name: Setup Pages
         uses: actions/configure-pages@v4
         
       - name: Build
         run: |
-          echo "Build started at $(date)"
-          NODE_ENV=production npm run build
-          echo "Build completed at $(date)"
+          echo "Building application..."
+          npm run build
         env:
           NODE_ENV: production
           NEXT_PUBLIC_BASE_PATH: /ai-research-sc-analytics
@@ -62,24 +60,9 @@ jobs:
 
       - name: Prepare static files
         run: |
-          echo "Preparing static files at $(date)"
+          echo "Preparing static files..."
           touch out/.nojekyll
           cp -r public/* out/
-          echo "Deployment build info:" > out/build-info.txt
-          echo "Built at: $(date)" >> out/build-info.txt
-          echo "Commit: ${{ github.sha }}" >> out/build-info.txt
-          echo "Branch: ${{ github.ref }}" >> out/build-info.txt
-          echo "Deployment timestamp: $(date +%s)" >> out/build-info.txt
-          
-      - name: Verify output directory
-        run: |
-          echo "Verifying output at $(date)"
-          echo "Contents of out directory:"
-          ls -la out/
-          echo "Contents of out/images directory:"
-          ls -la out/images/
-          echo "Contents of out/media directory:"
-          ls -la out/media/
           
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
