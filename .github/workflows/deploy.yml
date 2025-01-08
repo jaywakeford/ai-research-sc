@@ -28,6 +28,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
+          lfs: true
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -42,20 +43,25 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm ci
+          npm ci --legacy-peer-deps
+          npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
         env:
           CI: true
           NODE_ENV: production
 
       - name: Build with Next.js
         run: |
-          npm run build
+          echo "Starting build process..."
+          NODE_ENV=production npm run build
+          echo "Build completed, checking output directory..."
+          ls -la out/
+          echo "Creating .nojekyll file..."
           touch out/.nojekyll
-          cp -r public/* out/ || true
         env:
           NODE_ENV: production
           NEXT_TELEMETRY_DISABLED: 1
           CI: true
+          DEBUG: "*"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
