@@ -38,19 +38,19 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "18"
-          cache: 'npm'
           
       - name: Install dependencies
         run: |
           npm install --no-package-lock
           npm install --save-exact @react-pdf/renderer@3.1.14 dequal@2.0.3 pdfjs-dist@3.11.174 react-pdf@7.3.3 warning@4.0.3
-          npm install --save-dev --save-exact tailwindcss@3.3.0 postcss@8.4.32 autoprefixer@10.4.16
+          npm install --save-dev --save-exact tailwindcss@3.3.0 postcss@8.4.32 autoprefixer@10.4.16 postcss-preset-env@9.3.0
         
       - name: Setup Pages
         uses: actions/configure-pages@v4
         
       - name: Build
         run: |
+          npx tailwindcss init -p
           npm run build
           touch out/.nojekyll
           cp -r public/* out/
