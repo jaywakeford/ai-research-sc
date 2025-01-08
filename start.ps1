@@ -4,7 +4,7 @@ Get-Process -Name node -ErrorAction SilentlyContinue | Stop-Process -Force
 
 # Clear build files
 Write-Host "Cleaning build files..."
-Remove-Item -Path '.next' -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item -Path ".next" -Recurse -Force -ErrorAction SilentlyContinue
 
 # Set environment variables
 $env:HTTP_PROXY = ""
