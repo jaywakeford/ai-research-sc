@@ -3,12 +3,17 @@ const nextConfig = {
   output: 'export',
   images: {
     unoptimized: true,
-    loader: 'custom',
-    loaderFile: './src/utils/imageLoader.js',
   },
   reactStrictMode: true,
   trailingSlash: true,
   webpack: (config) => {
+    // Add module resolution aliases
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@': require('path').resolve(__dirname, 'src'),
+    };
+
+    // Add media file handling
     config.module.rules.push({
       test: /\.(mp3|mp4|pdf)$/i,
       type: 'asset/resource',
