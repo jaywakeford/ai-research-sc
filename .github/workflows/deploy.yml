@@ -38,18 +38,35 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm ci
+          echo "Installing dependencies..."
+          npm install
+          echo "Verifying critical dependencies..."
           npm list tailwindcss postcss autoprefixer
+          echo "Checking node_modules..."
+          ls -la node_modules/tailwindcss
+          ls -la node_modules/postcss
+          ls -la node_modules/autoprefixer
+          echo "Checking configurations..."
+          cat tailwind.config.js
+          cat postcss.config.js
 
       - name: Build with Next.js
         run: |
-          npm run build
+          echo "Starting build process..."
+          NODE_ENV=production npm run build
           touch out/.nojekyll
         env:
           CI: true
           NODE_ENV: production
           NEXT_TELEMETRY_DISABLED: 1
           NEXT_PUBLIC_BASE_PATH: /ai-research-sc-analytics
+
+      - name: Verify build output
+        run: |
+          echo "Checking build output..."
+          ls -la out/
+          echo "Checking for CSS files..."
+          find out/ -name "*.css"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
