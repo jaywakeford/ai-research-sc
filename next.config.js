@@ -1,25 +1,20 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
-  reactStrictMode: true,
-  trailingSlash: true,
   images: {
     unoptimized: true,
-    loader: 'custom',
-    loaderFile: './src/utils/imageLoader.js',
   },
   webpack: (config) => {
+    // Optimize media file handling
     config.module.rules.push({
       test: /\.(mp3|mp4|pdf)$/i,
       type: 'asset/resource',
       generator: {
-        filename: (pathData) => {
-          const relativePath = pathData.filename.replace(/^src\//, '');
-          return `media/${relativePath}`;
-        },
+        filename: 'media/[name][ext]'
       },
     });
 
+    // Reduce bundle size by excluding unnecessary modules
     config.resolve.fallback = {
       ...config.resolve.fallback,
       canvas: false,
@@ -30,9 +25,11 @@ const nextConfig = {
 
     return config;
   },
+  // Disable type checking during build for faster builds
   typescript: {
     ignoreBuildErrors: true
   },
+  // Disable ESLint during builds for faster builds
   eslint: {
     ignoreDuringBuilds: true
   }
