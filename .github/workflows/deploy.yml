@@ -39,31 +39,35 @@ jobs:
         with:
           static_site_generator: next
 
-      # Install dependencies
-      - name: Install dependencies
+      # Clean install dependencies
+      - name: Clean install
         run: |
-          echo "Current working directory:"
-          pwd
-          echo "Directory contents:"
-          ls -la
-          echo "Node version:"
-          node -v
-          echo "NPM version:"
-          npm -v
+          echo "Cleaning node_modules and package-lock.json..."
+          rm -rf node_modules package-lock.json
           echo "Installing dependencies..."
-          npm install
-        env:
-          CI: true
-          NODE_ENV: production
-
-      # Verify Tailwind installation
-      - name: Verify Tailwind
-        run: |
-          echo "Verifying Tailwind installation..."
+          npm install --no-audit
+          echo "Installing Tailwind CSS and related packages..."
+          npm install tailwindcss@3.3.0 postcss@8.4.32 autoprefixer@10.4.16 --save-exact
+          echo "Verifying installations..."
           npm list tailwindcss postcss autoprefixer
+
+      # Verify project structure
+      - name: Verify project structure
+        run: |
+          echo "Checking critical files..."
+          ls -la
+          echo "Checking Tailwind config..."
+          cat tailwind.config.js
+          echo "Checking PostCSS config..."
+          cat postcss.config.js
+          echo "Node modules contents..."
+          ls -la node_modules/tailwindcss
+          ls -la node_modules/postcss
+          ls -la node_modules/autoprefixer
 
       - name: Build with Next.js
         run: |
+          echo "Starting Next.js build..."
           npm run build
           touch out/.nojekyll
         env:
