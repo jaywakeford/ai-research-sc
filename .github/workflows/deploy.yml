@@ -26,6 +26,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          lfs: true
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -39,15 +40,6 @@ jobs:
           npm ls
         continue-on-error: true
 
-      - name: Create required config files
-        run: |
-          echo "module.exports = {" > postcss.config.js
-          echo "  plugins: {" >> postcss.config.js
-          echo "    tailwindcss: {}," >> postcss.config.js
-          echo "    autoprefixer: {}," >> postcss.config.js
-          echo "  }," >> postcss.config.js
-          echo "};" >> postcss.config.js
-
       - name: Setup Pages
         uses: actions/configure-pages@v4
         with:
@@ -59,7 +51,6 @@ jobs:
           echo "NPM version: $(npm -v)"
           npm run build
           touch out/.nojekyll
-          cp -r public/* out/ || true
         env:
           NODE_ENV: production
           NEXT_TELEMETRY_DISABLED: 1
