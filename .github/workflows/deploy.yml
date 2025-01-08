@@ -34,13 +34,15 @@ jobs:
           node-version: "18"
           cache: 'npm'
           
-      - name: Install dependencies
+      - name: Clean and Install
         run: |
+          echo "Starting clean installation at $(date)"
           npm cache clean --force
           rm -rf node_modules
           rm -rf .next
           rm -rf out
           npm ci --legacy-peer-deps
+          echo "Installation completed at $(date)"
           
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -57,16 +59,23 @@ jobs:
 
       - name: Prepare static files
         run: |
+          echo "Preparing static files at $(date)"
           touch out/.nojekyll
           cp -r public/* out/
-          echo "Files copied at $(date)" > out/build-info.txt
+          echo "Deployment build info:" > out/build-info.txt
+          echo "Built at: $(date)" >> out/build-info.txt
+          echo "Commit: ${{ github.sha }}" >> out/build-info.txt
+          echo "Branch: ${{ github.ref }}" >> out/build-info.txt
           
       - name: Verify output directory
         run: |
+          echo "Verifying output at $(date)"
           echo "Contents of out directory:"
           ls -la out/
           echo "Contents of out/images directory:"
           ls -la out/images/
+          echo "Contents of out/media directory:"
+          ls -la out/media/
           
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
