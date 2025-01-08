@@ -2,27 +2,18 @@
   "name": "ai-research-sc-analytics",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://jaywakeford.github.io/ai-research-sc-analytics",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "export": "next export",
-    "deploy": "gh-pages -d out",
-    "clean": "rimraf .next out"
+    "lint": "next lint"
   },
   "dependencies": {
-    "@react-pdf/renderer": "3.1.14",
-    "canvas": "^3.0.1",
-    "critters": "^0.0.20",
-    "hls.js": "^1.5.18",
+    "@react-pdf/renderer": "^3.1.14",
     "next": "14.0.4",
-    "pdfjs-dist": "3.4.120",
     "react": "^18",
     "react-dom": "^18",
-    "react-h5-audio-player": "^3.9.1",
-    "react-pdf": "7.3.3",
-    "video.js": "^8.21.0"
+    "react-pdf": "^7.6.0"
   },
   "devDependencies": {
     "@types/node": "^20",
@@ -31,13 +22,8 @@
     "autoprefixer": "^10.0.1",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
-    "gh-pages": "^6.1.1",
     "postcss": "^8",
-    "rimraf": "^5.0.5",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
-  },
-  "engines": {
-    "node": "18.x"
   }
 }
