@@ -34,7 +34,19 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps
+        run: |
+          npm ci --legacy-peer-deps
+          npm ls
+        continue-on-error: true
+
+      - name: Create required config files
+        run: |
+          echo "module.exports = {" > postcss.config.js
+          echo "  plugins: {" >> postcss.config.js
+          echo "    tailwindcss: {}," >> postcss.config.js
+          echo "    autoprefixer: {}," >> postcss.config.js
+          echo "  }," >> postcss.config.js
+          echo "};" >> postcss.config.js
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -42,10 +54,15 @@ jobs:
           static_site_generator: next
 
       - name: Build with Next.js
-        run: npm run build
+        run: |
+          echo "Node version: $(node -v)"
+          echo "NPM version: $(npm -v)"
+          npm run build
         env:
           NODE_ENV: production
           NEXT_TELEMETRY_DISABLED: 1
+          CI: true
+          DEBUG: "*"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
