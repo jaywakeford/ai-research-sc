@@ -3,8 +3,11 @@ const nextConfig = {
   output: 'export',
   basePath: process.env.NODE_ENV === 'production' ? '/ai-research-sc-analytics' : '',
   images: {
-    unoptimized: true
+    unoptimized: true,
+    loader: 'custom',
+    loaderFile: './src/utils/imageLoader.js',
   },
+  assetPrefix: process.env.NODE_ENV === 'production' ? '/ai-research-sc-analytics' : '',
   reactStrictMode: true,
   webpack: (config) => {
     // Handle media files

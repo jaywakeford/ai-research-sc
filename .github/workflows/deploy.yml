@@ -58,6 +58,8 @@ jobs:
           echo "Node version: $(node -v)"
           echo "NPM version: $(npm -v)"
           npm run build
+          touch out/.nojekyll
+          cp -r public/* out/ || true
         env:
           NODE_ENV: production
           NEXT_TELEMETRY_DISABLED: 1
