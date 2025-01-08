@@ -1,13 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
-  images: {
-    unoptimized: true,
-    loader: 'custom',
-    loaderFile: './src/utils/imageLoader.js',
-  },
   reactStrictMode: true,
   trailingSlash: true,
+  images: {
+    unoptimized: true,
+  },
   webpack: (config) => {
     config.module.rules.push({
       test: /\.(mp3|mp4|pdf)$/i,
