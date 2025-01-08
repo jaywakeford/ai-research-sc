@@ -5,8 +5,9 @@ on:
     branches: ["main"]
   workflow_dispatch:
 
+# Important: Allow write to the gh-pages branch
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -37,6 +38,8 @@ jobs:
       - name: Clean and Install
         run: |
           echo "Starting clean installation at $(date)"
+          rm -rf .git/index.lock
+          git clean -fdx
           npm cache clean --force
           rm -rf node_modules
           rm -rf .next
@@ -50,7 +53,7 @@ jobs:
       - name: Build
         run: |
           echo "Build started at $(date)"
-          npm run build
+          NODE_ENV=production npm run build
           echo "Build completed at $(date)"
         env:
           NODE_ENV: production
@@ -66,6 +69,7 @@ jobs:
           echo "Built at: $(date)" >> out/build-info.txt
           echo "Commit: ${{ github.sha }}" >> out/build-info.txt
           echo "Branch: ${{ github.ref }}" >> out/build-info.txt
+          echo "Deployment timestamp: $(date +%s)" >> out/build-info.txt
           
       - name: Verify output directory
         run: |
@@ -91,4 +95,6 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4 
+        uses: actions/deploy-pages@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }} 
