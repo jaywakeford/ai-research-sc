@@ -1,18 +1,15 @@
 name: Deploy Next.js site to Pages
 
-# Deployment trigger: Manual re-run
 on:
   push:
     branches: ["main"]
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
 concurrency:
   group: "pages"
   cancel-in-progress: true
@@ -39,35 +36,13 @@ jobs:
         with:
           static_site_generator: next
 
-      # Clean install dependencies
-      - name: Clean install
+      - name: Install dependencies
         run: |
-          echo "Cleaning node_modules and package-lock.json..."
-          rm -rf node_modules package-lock.json
-          echo "Installing dependencies..."
-          npm install --no-audit
-          echo "Installing Tailwind CSS and related packages..."
-          npm install tailwindcss@3.3.0 postcss@8.4.32 autoprefixer@10.4.16 --save-exact
-          echo "Verifying installations..."
+          npm ci
           npm list tailwindcss postcss autoprefixer
-
-      # Verify project structure
-      - name: Verify project structure
-        run: |
-          echo "Checking critical files..."
-          ls -la
-          echo "Checking Tailwind config..."
-          cat tailwind.config.js
-          echo "Checking PostCSS config..."
-          cat postcss.config.js
-          echo "Node modules contents..."
-          ls -la node_modules/tailwindcss
-          ls -la node_modules/postcss
-          ls -la node_modules/autoprefixer
 
       - name: Build with Next.js
         run: |
-          echo "Starting Next.js build..."
           npm run build
           touch out/.nojekyll
         env:

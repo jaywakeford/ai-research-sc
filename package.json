@@ -8,8 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "deploy": "next build && echo $null > out/.nojekyll",
-    "postinstall": "npm install tailwindcss@3.3.0 postcss@8.4.32 autoprefixer@10.4.16 --save-exact"
+    "deploy": "next build && echo $null > out/.nojekyll"
   },
   "dependencies": {
     "@react-pdf/renderer": "3.1.14",
