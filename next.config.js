@@ -25,12 +25,16 @@ const nextConfig = {
       },
     });
 
+    // Disable problematic Node.js modules
     config.resolve.fallback = {
       ...config.resolve.fallback,
       canvas: false,
       fs: false,
       path: false,
       os: false,
+      crypto: false,
+      stream: false,
+      zlib: false,
     };
 
     return config;
