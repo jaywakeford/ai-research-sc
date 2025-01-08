@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy Next.js site to Pages
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
@@ -28,14 +28,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          lfs: true
           fetch-depth: 0
-          
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: "18"
-          
+
       - name: Install dependencies
         run: |
           npm install --legacy-peer-deps
@@ -43,7 +42,7 @@ jobs:
           
       - name: Setup Pages
         uses: actions/configure-pages@v4
-        
+
       - name: Build
         run: |
           npm run build
