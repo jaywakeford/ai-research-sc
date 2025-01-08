@@ -10,7 +10,7 @@ const getBasePath = () => {
 export const getMediaPath = (path: string): string => {
   const basePath = getBasePath();
   const cleanPath = path.startsWith('/') ? path : `/${path}`;
-  return `${basePath}/static/media${cleanPath}`;
+  return `${basePath}${cleanPath}`;
 };
 
 export const getImagePath = (path: string): string => {
