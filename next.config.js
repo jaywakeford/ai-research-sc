@@ -15,10 +15,7 @@ const nextConfig = {
       test: /\.(mp3|mp4|pdf)$/i,
       type: 'asset/resource',
       generator: {
-        filename: 'static/media/[name][ext]',
-        publicPath: process.env.NODE_ENV === 'production' 
-          ? '/ai-research-sc-analytics/_next/'
-          : '/_next/',
+        filename: 'static/media/[path][name][ext]',
       },
     });
 

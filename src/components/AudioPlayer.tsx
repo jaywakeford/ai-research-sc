@@ -14,11 +14,32 @@ export default function AudioPlayer({ src, title }: AudioPlayerProps) {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const playerRef = useRef<H5AudioPlayer>(null);
-  const fullPath = getAudioPath(src);
+  const fullPath = src.startsWith('/media/audio/') ? getAudioPath(src) : getAudioPath(`media/audio/${src}`);
 
   useEffect(() => {
-    console.log('Audio player mounted with path:', fullPath);
-    setLoading(false);
+    const preloadAudio = new Audio();
+    preloadAudio.src = fullPath;
+    
+    const handleCanPlayThrough = () => {
+      console.log('Audio preloaded successfully:', fullPath);
+      setLoading(false);
+      setError(null);
+    };
+
+    const handlePreloadError = () => {
+      console.error('Audio preload error:', fullPath);
+      setError('Failed to load audio. Please check console for details.');
+      setLoading(false);
+    };
+
+    preloadAudio.addEventListener('canplaythrough', handleCanPlayThrough);
+    preloadAudio.addEventListener('error', handlePreloadError);
+    preloadAudio.load();
+
+    return () => {
+      preloadAudio.removeEventListener('canplaythrough', handleCanPlayThrough);
+      preloadAudio.removeEventListener('error', handlePreloadError);
+    };
   }, [fullPath]);
 
   const handleError = (e: any) => {
