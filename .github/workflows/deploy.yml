@@ -36,13 +36,10 @@ jobs:
         with:
           node-version: "18"
           
-      - name: Clean install
+      - name: Install dependencies
         run: |
-          rm -rf node_modules
-          rm -rf .next
-          rm -rf out
-          rm -f package-lock.json
-          npm install
+          npm install --legacy-peer-deps
+          npx tailwindcss init -p
           
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -54,6 +51,7 @@ jobs:
           cp -r public/* out/
         env:
           NODE_OPTIONS: "--max-old-space-size=4096"
+          NEXT_TELEMETRY_DISABLED: 1
           
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
