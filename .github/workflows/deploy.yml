@@ -36,8 +36,13 @@ jobs:
           node-version: "18"
           cache: npm
 
+      - name: Clean npm cache
+        run: npm cache clean --force
+
       - name: Install dependencies
         run: |
+          rm -rf node_modules
+          rm -rf .next
           npm ci
         env:
           CI: true
