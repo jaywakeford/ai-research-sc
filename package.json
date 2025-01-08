@@ -2,13 +2,11 @@
   "name": "ai-research-sc-analytics",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://ai-research-sc-analytics.github.io/ai-research-sc-analytics",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "deploy": "gh-pages -d out --dotfiles"
+    "lint": "next lint"
   },
   "dependencies": {
     "@react-pdf/renderer": "3.1.14",
@@ -28,7 +26,6 @@
     "autoprefixer": "^10.4.20",
     "eslint": "8.56.0",
     "eslint-config-next": "14.0.4",
-    "gh-pages": "^5.0.0",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17",
     "typescript": "5.3.3"
