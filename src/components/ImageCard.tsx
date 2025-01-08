@@ -15,7 +15,7 @@ const ImageCard: React.FC<ImageCardProps> = ({ imagePath, title, description, on
   const fullImagePath = isPlaceholder ? '' : getImagePath(imagePath);
 
   return (
-    <div className="image-card cursor-pointer" onClick={onClick}>
+    <div className="relative w-full h-full" onClick={onClick}>
       {isPlaceholder ? (
         <ImagePlaceholder
           title={title}
@@ -24,20 +24,17 @@ const ImageCard: React.FC<ImageCardProps> = ({ imagePath, title, description, on
           className="w-full h-full"
         />
       ) : (
-        <div className="relative w-full aspect-[16/9]">
+        <div className="relative w-full h-full">
           <Image
             src={fullImagePath}
             alt={title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             priority
-            className="object-cover rounded-lg"
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
             unoptimized
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent p-6 flex flex-col justify-end rounded-lg">
-            <h3 className="text-xl font-semibold mb-2 text-white">{title}</h3>
-            <p className="text-sm text-gray-200">{description}</p>
-          </div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-300" />
         </div>
       )}
     </div>
