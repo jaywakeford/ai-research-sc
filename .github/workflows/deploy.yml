@@ -19,7 +19,7 @@ env:
   NEXT_PUBLIC_BASE_PATH: /ai-research-sc-analytics
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -38,10 +38,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "18"
-          cache: 'npm'
           
-      - name: Install dependencies
+      - name: Clean install dependencies
         run: |
+          rm -rf node_modules
+          rm -rf .next
+          rm -rf out
           npm ci
         
       - name: Setup Pages
@@ -58,13 +60,6 @@ jobs:
         with:
           path: ./out
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4 
