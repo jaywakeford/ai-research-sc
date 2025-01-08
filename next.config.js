@@ -1,13 +1,12 @@
-const isProd = process.env.NODE_ENV === 'production';
-const basePath = isProd ? '/ai-research-sc-analytics' : '';
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
-  basePath,
-  assetPrefix: isProd ? `${basePath}/` : '',
+  basePath: process.env.NODE_ENV === 'production' ? '/ai-research-sc-analytics' : '',
+  assetPrefix: process.env.NODE_ENV === 'production' ? '/ai-research-sc-analytics/' : '',
   images: {
     unoptimized: true,
+    loader: 'custom',
+    path: process.env.NODE_ENV === 'production' ? '/ai-research-sc-analytics' : ''
   },
   trailingSlash: true,
   reactStrictMode: true,
