@@ -10,12 +10,16 @@ const nextConfig = {
   assetPrefix: process.env.NODE_ENV === 'production' ? '/ai-research-sc-analytics' : '',
   reactStrictMode: true,
   webpack: (config) => {
-    // Handle media files
+    // Handle media files with proper paths
     config.module.rules.push({
       test: /\.(mp3|mp4|pdf)$/i,
       type: 'asset/resource',
       generator: {
-        filename: 'static/media/[path][name][ext]',
+        filename: (pathData) => {
+          // Keep the original path structure
+          const filePath = pathData.filename.replace(/^src\//, '');
+          return `static/media/${filePath}`;
+        },
       },
     });
 
