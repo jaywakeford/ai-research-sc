@@ -16,25 +16,17 @@ concurrency:
   group: "pages"
   cancel-in-progress: false
 
-env:
-  NODE_ENV: production
-  NEXT_PUBLIC_BASE_PATH: /ai-research-sc-analytics
-
 jobs:
   build:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-          lfs: true
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: "18.17.0"
-          cache: npm
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -43,29 +35,15 @@ jobs:
 
       - name: Install dependencies
         run: |
-          echo "Node version: $(node -v)"
-          echo "NPM version: $(npm -v)"
-          rm -rf node_modules package-lock.json
           npm install
-          npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
-          npm list
-        env:
-          CI: true
-          NODE_ENV: production
+          npm install -D tailwindcss postcss autoprefixer
 
       - name: Build with Next.js
         run: |
-          echo "Starting build process..."
           npm run build
-          echo "Build completed, checking output directory..."
-          ls -la out/
-          echo "Creating .nojekyll file..."
           touch out/.nojekyll
         env:
-          NODE_ENV: production
           NEXT_TELEMETRY_DISABLED: 1
-          CI: true
-          DEBUG: "*"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
