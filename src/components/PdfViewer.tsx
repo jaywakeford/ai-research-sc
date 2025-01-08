@@ -73,64 +73,125 @@ const PdfViewer: React.FC<PdfViewerProps> = memo(({ pdfUrl }) => {
   }
 
   return (
-    <div className="pdf-viewer">
-      {loading && <div>Loading PDF...</div>}
-      {error && (
-        <div className="error-container">
-          <div className="error-message">Error loading PDF: {error}</div>
-          <div className="error-details">File: {fullPath}</div>
-        </div>
-      )}
-      
-      {!error && (
-        <Document
-          file={fullPath}
-          onLoadSuccess={onDocumentLoadSuccess}
-          onLoadError={onDocumentLoadError}
-          loading={<div>Loading PDF...</div>}
-          error={<div>Failed to load PDF. Please try again.</div>}
-        >
-          <Page 
-            key={`page_${pageNumber}`}
-            pageNumber={pageNumber} 
-            loading={<div>Loading page...</div>}
-            renderTextLayer={false}
-            renderAnnotationLayer={false}
-            error={<div>Error loading page {pageNumber}</div>}
-          />
-        </Document>
-      )}
+    <div className="pdf-container">
+      <div className="pdf-viewer">
+        {loading && <div>Loading PDF...</div>}
+        {error && (
+          <div className="error-container">
+            <div className="error-message">Error loading PDF: {error}</div>
+            <div className="error-details">File: {fullPath}</div>
+          </div>
+        )}
+        
+        {!error && (
+          <Document
+            file={fullPath}
+            onLoadSuccess={onDocumentLoadSuccess}
+            onLoadError={onDocumentLoadError}
+            loading={<div>Loading PDF...</div>}
+            error={<div>Failed to load PDF. Please try again.</div>}
+          >
+            <div className="pdf-page-container">
+              <Page 
+                key={`page_${pageNumber}`}
+                pageNumber={pageNumber} 
+                loading={<div>Loading page...</div>}
+                renderTextLayer={false}
+                renderAnnotationLayer={false}
+                error={<div>Error loading page {pageNumber}</div>}
+                width={800}
+              />
+            </div>
+          </Document>
+        )}
+      </div>
 
       {!loading && !error && numPages > 0 && (
-        <div className="pdf-controls">
-          <button
-            onClick={() => handlePageChange(pageNumber - 1)}
-            disabled={pageNumber <= 1}
-            aria-label="Previous page"
-          >
-            Previous
-          </button>
-          <span>
-            Page {pageNumber} of {numPages}
-          </span>
-          <button
-            onClick={() => handlePageChange(pageNumber + 1)}
-            disabled={pageNumber >= numPages}
-            aria-label="Next page"
-          >
-            Next
-          </button>
+        <div className="navigation-controls">
+          <div className="pdf-controls">
+            <button
+              onClick={() => handlePageChange(pageNumber - 1)}
+              disabled={pageNumber <= 1}
+              aria-label="Previous page"
+              className="nav-button"
+            >
+              Previous
+            </button>
+            <span className="page-info">
+              Page {pageNumber} of {numPages}
+            </span>
+            <button
+              onClick={() => handlePageChange(pageNumber + 1)}
+              disabled={pageNumber >= numPages}
+              aria-label="Next page"
+              className="nav-button"
+            >
+              Next
+            </button>
+          </div>
         </div>
       )}
 
       <style jsx>{`
-        .pdf-viewer {
+        .pdf-container {
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 1rem;
+          width: 100%;
+          max-width: 1000px;
+          margin: 0 auto;
+          background: rgba(0, 0, 0, 0.2);
+          border-radius: 8px;
           padding: 1rem;
+        }
+        .pdf-viewer {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
           min-height: 500px;
+          max-height: 800px;
+          overflow-y: auto;
+        }
+        .pdf-page-container {
+          max-width: 100%;
+          overflow: hidden;
+          border-radius: 4px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .navigation-controls {
+          width: 100%;
+          padding: 1rem;
+          background: rgba(0, 0, 0, 0.3);
+          border-radius: 0 0 8px 8px;
+          margin-top: 1rem;
+        }
+        .pdf-controls {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 1rem;
+        }
+        .nav-button {
+          padding: 0.5rem 1rem;
+          background: #0070f3;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          transition: background-color 0.2s;
+          font-weight: 500;
+        }
+        .nav-button:hover:not(:disabled) {
+          background: #0051a8;
+        }
+        .nav-button:disabled {
+          background: #ccc;
+          cursor: not-allowed;
+        }
+        .page-info {
+          color: #fff;
+          font-size: 0.9rem;
         }
         .error-container {
           display: flex;
@@ -139,6 +200,7 @@ const PdfViewer: React.FC<PdfViewerProps> = memo(({ pdfUrl }) => {
           gap: 0.5rem;
           color: #dc2626;
           text-align: center;
+          padding: 2rem;
         }
         .error-message {
           font-weight: bold;
@@ -146,28 +208,6 @@ const PdfViewer: React.FC<PdfViewerProps> = memo(({ pdfUrl }) => {
         .error-details {
           font-size: 0.875rem;
           color: #666;
-        }
-        .pdf-controls {
-          display: flex;
-          gap: 1rem;
-          align-items: center;
-          margin-top: 1rem;
-        }
-        button {
-          padding: 0.5rem 1rem;
-          background: #0070f3;
-          color: white;
-          border: none;
-          border-radius: 4px;
-          cursor: pointer;
-          transition: background-color 0.2s;
-        }
-        button:hover:not(:disabled) {
-          background: #0051a8;
-        }
-        button:disabled {
-          background: #ccc;
-          cursor: not-allowed;
         }
       `}</style>
     </div>
