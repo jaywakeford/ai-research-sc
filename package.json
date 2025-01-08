@@ -2,6 +2,7 @@
   "name": "ai-research-sc-analytics",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://jaywakeford.github.io/ai-research-sc-analytics",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
