@@ -5,8 +5,6 @@ const nextConfig = {
     unoptimized: true,
     loader: 'custom',
     loaderFile: './src/utils/imageLoader.js',
-    remotePatterns: [],
-    domains: [],
   },
   reactStrictMode: true,
   trailingSlash: true,
