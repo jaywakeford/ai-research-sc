@@ -38,16 +38,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "18"
+          cache: 'npm'
           
       - name: Install dependencies
         run: |
-          npm install -g npm@latest
-          rm -rf node_modules
-          rm -rf .next
-          rm -rf out
-          rm -f package-lock.json
-          npm install --legacy-peer-deps
-          npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
+          npm install --no-package-lock
+          npm install --save-exact @react-pdf/renderer@3.1.14 dequal@2.0.3 pdfjs-dist@3.11.174 react-pdf@7.3.3 warning@4.0.3
+          npm install --save-dev --save-exact tailwindcss@3.3.0 postcss@8.4.32 autoprefixer@10.4.16
         
       - name: Setup Pages
         uses: actions/configure-pages@v4
