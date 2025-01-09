@@ -15,6 +15,15 @@ const nextConfig = {
       },
     });
 
+    // Handle PDF.js worker
+    config.module.rules.push({
+      test: /pdf\.worker\.(min\.)?js/,
+      type: 'asset/resource',
+      generator: {
+        filename: 'static/[name][ext]'
+      },
+    });
+
     // Ignore canvas module
     config.resolve.alias.canvas = false;
 
