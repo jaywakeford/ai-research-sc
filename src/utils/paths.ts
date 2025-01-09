@@ -1,8 +1,10 @@
 const getBasePath = () => {
   if (typeof window === 'undefined') {
-    return process.env.NEXT_PUBLIC_BASE_PATH || '';
+    return process.env.NODE_ENV === 'production' ? '/ai-research-sc-analytics' : '';
   }
-  return process.env.NEXT_PUBLIC_BASE_PATH || '';
+  return window.location.pathname.startsWith('/ai-research-sc-analytics') 
+    ? '/ai-research-sc-analytics' 
+    : '';
 };
 
 export const getMediaPath = (path: string): string => {

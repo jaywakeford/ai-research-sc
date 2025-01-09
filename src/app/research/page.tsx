@@ -10,7 +10,10 @@ const AudioPlayer = dynamic(() => import('@/components/media').then(mod => mod.A
 // Helper function to get the full URL with base path
 const getFullUrl = (path: string) => {
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
-  return `${basePath}${path}`;
+  // Ensure we don't double up on slashes
+  const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+  const cleanBasePath = basePath.endsWith('/') ? basePath.slice(0, -1) : basePath;
+  return `${cleanBasePath}/${cleanPath}`;
 };
 
 const researchPapers = [
