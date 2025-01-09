@@ -1,8 +1,7 @@
 'use client';
 
 import React from 'react';
-import VideoPlayer from '@/components/VideoPlayer';
-import AudioPlayer from '@/components/AudioPlayer';
+import { VideoPlayer, AudioPlayer } from '@/components/media';
 
 const videos = [
   {

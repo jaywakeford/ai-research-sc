@@ -4,8 +4,8 @@ import dynamic from 'next/dynamic';
 import React, { useState } from 'react';
 
 // Dynamically import components with ssr: false
-const PdfViewer = dynamic(() => import('@/components/PdfViewer'), { ssr: false });
-const AudioPlayer = dynamic(() => import('@/components/AudioPlayer'), { ssr: false });
+const PdfViewer = dynamic(() => import('@/components/media').then(mod => mod.PdfViewer), { ssr: false });
+const AudioPlayer = dynamic(() => import('@/components/media').then(mod => mod.AudioPlayer), { ssr: false });
 
 const researchPapers = [
   {
@@ -45,6 +45,20 @@ const researchPapers = [
 export default function ResearchPage() {
   const [selectedPaper, setSelectedPaper] = useState(researchPapers[0]);
 
+  const handlePreviousPaper = () => {
+    const currentIndex = researchPapers.findIndex(paper => paper.id === selectedPaper.id);
+    if (currentIndex > 0) {
+      setSelectedPaper(researchPapers[currentIndex - 1]);
+    }
+  };
+
+  const handleNextPaper = () => {
+    const currentIndex = researchPapers.findIndex(paper => paper.id === selectedPaper.id);
+    if (currentIndex < researchPapers.length - 1) {
+      setSelectedPaper(researchPapers[currentIndex + 1]);
+    }
+  };
+
   return (
     <main className="min-h-screen py-16">
       <div className="container mx-auto px-4">
@@ -54,7 +68,28 @@ export default function ResearchPage() {
           and advanced analytics in financial systems.
         </p>
 
-        {/* Paper Selection */}
+        {/* Paper Navigation */}
+        <div className="flex justify-between items-center mb-8">
+          <button
+            onClick={handlePreviousPaper}
+            disabled={selectedPaper.id === researchPapers[0].id}
+            className="px-6 py-3 bg-blue-500 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Previous Paper
+          </button>
+          <span className="text-lg text-gray-300">
+            Paper {researchPapers.findIndex(paper => paper.id === selectedPaper.id) + 1} of {researchPapers.length}
+          </span>
+          <button
+            onClick={handleNextPaper}
+            disabled={selectedPaper.id === researchPapers[researchPapers.length - 1].id}
+            className="px-6 py-3 bg-blue-500 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Next Paper
+          </button>
+        </div>
+
+        {/* Paper Selection Tabs */}
         <div className="flex flex-wrap justify-center gap-4 mb-12">
           {researchPapers.map((paper) => (
             <button
@@ -84,7 +119,7 @@ export default function ResearchPage() {
                   ))}
                 </div>
               </div>
-              <div className="h-[800px] mb-6 relative bg-white dark:bg-gray-800 rounded-lg overflow-hidden">
+              <div className="h-[800px] relative bg-gray-800 rounded-lg overflow-hidden">
                 <PdfViewer pdfUrl={selectedPaper.pdfUrl} />
               </div>
             </div>

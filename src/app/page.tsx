@@ -1,10 +1,9 @@
 'use client';
 
 import React from 'react';
-import HeroSection from '@/components/HeroSection';
-import ImageCard from '@/components/ImageCard';
-import MetricsSection from '@/components/MetricsSection';
-import AudioPlayer from '@/components/AudioPlayer';
+import { HeroSection, ImageCard } from '@/components/core';
+import { MetricsSection } from '@/components/sections';
+import { AudioPlayer } from '@/components/media';
 import Image from 'next/image';
 
 export default function Home() {
