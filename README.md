@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # AI Research and Supply Chain Analytics Platform
 
 A comprehensive web application showcasing research papers, analytics implementations, and supply chain management solutions. Built with Next.js and modern web technologies.
@@ -78,3 +79,6 @@ npm run start
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+=======
+# ai-research-sc
+>>>>>>> 8294bebc2a74245651f1be38dad19bd71e0e38f1
