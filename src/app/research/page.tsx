@@ -7,37 +7,43 @@ import React, { useState } from 'react';
 const PdfViewer = dynamic(() => import('@/components/media').then(mod => mod.PdfViewer), { ssr: false });
 const AudioPlayer = dynamic(() => import('@/components/media').then(mod => mod.AudioPlayer), { ssr: false });
 
+// Helper function to get the full URL with base path
+const getFullUrl = (path: string) => {
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+  return `${basePath}${path}`;
+};
+
 const researchPapers = [
   {
     id: 'powerbi',
     title: 'Power BI Analytics Development',
     description: 'Advanced analytics implementation for financial trading systems using Power BI',
-    pdfUrl: process.env.NEXT_PUBLIC_BASE_PATH + '/media/pdfs/powerbi-analytics-development-a.pdf',
-    audioUrl: process.env.NEXT_PUBLIC_BASE_PATH + '/media/audio/power-bi-analytics-for-at-the-money-trading.mp3',
+    pdfUrl: getFullUrl('/media/pdfs/powerbi-analytics-development-a.pdf'),
+    audioUrl: getFullUrl('/media/audio/power-bi-analytics-for-at-the-money-trading.mp3'),
     tags: ['Power BI', 'Analytics', 'Trading']
   },
   {
     id: 'agents',
     title: 'AI Agent Systems Research',
     description: 'Research on AI agent systems for finance and macroeconomic analysis',
-    pdfUrl: process.env.NEXT_PUBLIC_BASE_PATH + '/media/pdfs/agents-research-b.pdf',
-    audioUrl: process.env.NEXT_PUBLIC_BASE_PATH + '/media/audio/ai-agent-systems-for-finance-and-macroeconomics.mp3',
+    pdfUrl: getFullUrl('/media/pdfs/agents-research-b.pdf'),
+    audioUrl: getFullUrl('/media/audio/ai-agent-systems-for-finance-and-macroeconomics.mp3'),
     tags: ['AI', 'Finance', 'Agents']
   },
   {
     id: 'interpreter',
     title: 'Open Interpreter Integration',
     description: 'Automating workflows through advanced interpreter systems',
-    pdfUrl: process.env.NEXT_PUBLIC_BASE_PATH + '/media/pdfs/open-interpreter-c.pdf',
-    audioUrl: process.env.NEXT_PUBLIC_BASE_PATH + '/media/audio/automating-workflows-with-open-interpreter.mp3',
+    pdfUrl: getFullUrl('/media/pdfs/open-interpreter-c.pdf'),
+    audioUrl: getFullUrl('/media/audio/automating-workflows-with-open-interpreter.mp3'),
     tags: ['Automation', 'Workflow', 'Integration']
   },
   {
     id: 'ml',
     title: 'Independent Machine Learning Research',
     description: 'Machine learning applications in financial trading systems',
-    pdfUrl: process.env.NEXT_PUBLIC_BASE_PATH + '/media/pdfs/independent-ml-learning-model-d.pdf',
-    audioUrl: process.env.NEXT_PUBLIC_BASE_PATH + '/media/audio/independent-machine-learning-research-in-financial-trading.mp3',
+    pdfUrl: getFullUrl('/media/pdfs/independent-ml-learning-model-d.pdf'),
+    audioUrl: getFullUrl('/media/audio/independent-machine-learning-research-in-financial-trading.mp3'),
     tags: ['Machine Learning', 'Trading', 'Research']
   }
 ];
