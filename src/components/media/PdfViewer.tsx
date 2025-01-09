@@ -1,12 +1,15 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Document, Page, pdfjs } from 'react-pdf';
+import { Document, Page } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 
-// Configure PDF.js worker
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+// Configure worker
+if (typeof window !== 'undefined') {
+  const pdfjsWorker = require('pdfjs-dist/build/pdf.worker.entry');
+  require('pdfjs-dist').GlobalWorkerOptions.workerSrc = pdfjsWorker;
+}
 
 interface PdfViewerProps {
   pdfUrl: string;
@@ -15,7 +18,6 @@ interface PdfViewerProps {
 const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
   const [numPages, setNumPages] = useState<number>(0);
   const [pageNumber, setPageNumber] = useState<number>(1);
-  const [scale, setScale] = useState<number>(1.0);
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
     setNumPages(numPages);
@@ -29,35 +31,19 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
     });
   }
 
-  function previousPage() {
-    changePage(-1);
-  }
-
-  function nextPage() {
-    changePage(1);
-  }
-
-  function zoomIn() {
-    setScale(prevScale => Math.min(2.0, prevScale + 0.1));
-  }
-
-  function zoomOut() {
-    setScale(prevScale => Math.max(0.5, prevScale - 0.1));
-  }
-
   return (
     <div className="flex flex-col h-full">
       <div className="flex justify-between items-center mb-4 p-2 bg-gray-800 rounded-lg">
         <div className="flex items-center space-x-2">
           <button
-            onClick={previousPage}
+            onClick={() => changePage(-1)}
             disabled={pageNumber <= 1}
             className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Previous
           </button>
           <button
-            onClick={nextPage}
+            onClick={() => changePage(1)}
             disabled={pageNumber >= numPages}
             className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50 disabled:cursor-not-allowed"
           >
@@ -67,34 +53,18 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
             Page {pageNumber} of {numPages}
           </span>
         </div>
-        <div className="flex items-center space-x-2">
-          <button
-            onClick={zoomOut}
-            className="px-3 py-1 bg-gray-600 text-white rounded"
-          >
-            -
-          </button>
-          <span className="text-white">{Math.round(scale * 100)}%</span>
-          <button
-            onClick={zoomIn}
-            className="px-3 py-1 bg-gray-600 text-white rounded"
-          >
-            +
-          </button>
-        </div>
       </div>
-      <div className="flex-1 overflow-auto bg-gray-900 rounded-lg">
+      <div className="flex-1 overflow-auto bg-gray-900 rounded-lg flex justify-center">
         <Document
           file={pdfUrl}
           onLoadSuccess={onDocumentLoadSuccess}
-          className="flex justify-center"
+          loading={<div className="text-white">Loading PDF...</div>}
+          error={<div className="text-red-500">Error loading PDF.</div>}
         >
           <Page
             pageNumber={pageNumber}
-            scale={scale}
             className="max-w-full"
-            renderTextLayer={true}
-            renderAnnotationLayer={true}
+            loading={<div className="text-white">Loading page...</div>}
           />
         </Document>
       </div>
