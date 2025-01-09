@@ -1,15 +1,14 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Document, Page } from 'react-pdf';
+import React, { useState, useEffect } from 'react';
+import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 
 // Configure worker
-if (typeof window !== 'undefined') {
-  const pdfjsWorker = require('pdfjs-dist/build/pdf.worker.entry');
-  require('pdfjs-dist').GlobalWorkerOptions.workerSrc = pdfjsWorker;
-}
+useEffect(() => {
+  pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+}, []);
 
 interface PdfViewerProps {
   pdfUrl: string;
@@ -18,10 +17,17 @@ interface PdfViewerProps {
 const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
   const [numPages, setNumPages] = useState<number>(0);
   const [pageNumber, setPageNumber] = useState<number>(1);
+  const [error, setError] = useState<string | null>(null);
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
     setNumPages(numPages);
     setPageNumber(1);
+    setError(null);
+  }
+
+  function onDocumentLoadError(err: Error): void {
+    console.error('Error loading PDF:', err);
+    setError('Error loading PDF. Please try again.');
   }
 
   function changePage(offset: number) {
@@ -55,18 +61,22 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
         </div>
       </div>
       <div className="flex-1 overflow-auto bg-gray-900 rounded-lg flex justify-center">
-        <Document
-          file={pdfUrl}
-          onLoadSuccess={onDocumentLoadSuccess}
-          loading={<div className="text-white">Loading PDF...</div>}
-          error={<div className="text-red-500">Error loading PDF.</div>}
-        >
-          <Page
-            pageNumber={pageNumber}
-            className="max-w-full"
-            loading={<div className="text-white">Loading page...</div>}
-          />
-        </Document>
+        {error ? (
+          <div className="text-red-500 flex items-center justify-center">{error}</div>
+        ) : (
+          <Document
+            file={pdfUrl}
+            onLoadSuccess={onDocumentLoadSuccess}
+            onLoadError={onDocumentLoadError}
+            loading={<div className="text-white">Loading PDF...</div>}
+          >
+            <Page
+              pageNumber={pageNumber}
+              className="max-w-full"
+              loading={<div className="text-white">Loading page...</div>}
+            />
+          </Document>
+        )}
       </div>
     </div>
   );
