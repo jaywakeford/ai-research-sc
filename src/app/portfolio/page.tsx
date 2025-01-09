@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import ImageCard from '@/components/ImageCard';
+import { ImageCard } from '@/components/core';
 
 const portfolioItems = [
   {

@@ -15,6 +15,9 @@ const nextConfig = {
       },
     });
 
+    // Ignore canvas module
+    config.resolve.alias.canvas = false;
+
     // Reduce bundle size by excluding unnecessary modules
     config.resolve.fallback = {
       ...config.resolve.fallback,
