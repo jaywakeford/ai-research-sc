@@ -2,12 +2,12 @@
   "name": "ai-research-sc",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://jaywakeford.github.io/ai-research-sc",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start", 
-    "lint": "next lint" 
+    "start": "npx serve out",
+    "lint": "next lint",
+    "preview": "npx serve out -p 3000"
   },
   "dependencies": {
     "@react-pdf/renderer": "3.1.14",

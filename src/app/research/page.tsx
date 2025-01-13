@@ -8,12 +8,10 @@ const PdfViewer = dynamic(() => import('@/components/media').then(mod => mod.Pdf
 const AudioPlayer = dynamic(() => import('@/components/media').then(mod => mod.AudioPlayer), { ssr: false });
 
 // Helper function to get the full URL with base path
-const getFullUrl = (path: string) => {
-  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
-  // Ensure we don't double up on slashes
-  const cleanPath = path.startsWith('/') ? path.slice(1) : path;
-  const cleanBasePath = basePath.endsWith('/') ? basePath.slice(0, -1) : basePath;
-  return `${cleanBasePath}/${cleanPath}`;
+const getFullUrl = (path: string): string => {
+  // Remove any leading slashes and clean the path
+  const cleanPath = path.replace(/^\/+/, '');
+  return `/${cleanPath}`;
 };
 
 const researchPapers = [
