@@ -3,8 +3,9 @@ const nextConfig = {
   output: 'export',
   basePath: process.env.NEXT_PUBLIC_BASE_PATH || '',
   assetPrefix: process.env.NEXT_PUBLIC_BASE_PATH || '',
+  trailingSlash: true, // Ensures consistent routing for static sites
   images: {
-    unoptimized: true,
+    unoptimized: true, // Required for Cloudflare Pages
   },
   webpack: (config) => {
     // Optimize media file handling
@@ -12,7 +13,7 @@ const nextConfig = {
       test: /\.(mp3|mp4|pdf)$/i,
       type: 'asset/resource',
       generator: {
-        filename: 'media/[name][ext]'
+        filename: 'media/[name][ext]',
       },
     });
 
@@ -21,7 +22,7 @@ const nextConfig = {
       test: /pdf\.worker\.(min\.)?js/,
       type: 'asset/resource',
       generator: {
-        filename: 'static/[name][ext]'
+        filename: 'static/[name][ext]',
       },
     });
 
@@ -41,12 +42,12 @@ const nextConfig = {
   },
   // Disable type checking during build for faster builds
   typescript: {
-    ignoreBuildErrors: true
+    ignoreBuildErrors: true,
   },
   // Disable ESLint during builds for faster builds
   eslint: {
-    ignoreDuringBuilds: true
-  }
+    ignoreDuringBuilds: true,
+  },
 };
 
-module.exports = nextConfig; 
+module.exports = nextConfig;
