@@ -1,22 +1,25 @@
-const getBasePath = () => {
-  if (typeof window === 'undefined') {
-    return process.env.NODE_ENV === 'production' ? '/ai-research-sc-analytics' : '';
-  }
-  return window.location.pathname.startsWith('/ai-research-sc-analytics') 
-    ? '/ai-research-sc-analytics' 
-    : '';
+/**
+ * Utility function to get the correct path for assets based on environment
+ */
+export const getAssetPath = (path: string): string => {
+  const basePath = process.env.NODE_ENV === 'production' ? '/ai-research-sc' : '';
+  // Ensure we don't double up on slashes
+  const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+  return `${basePath}/${cleanPath}`;
 };
 
-export const getMediaPath = (path: string): string => {
-  const basePath = getBasePath();
-  const cleanPath = path.startsWith('/') ? path : `/${path}`;
-  return `${basePath}${cleanPath}`;
-};
-
+/**
+ * Utility function specifically for image paths
+ */
 export const getImagePath = (path: string): string => {
-  const basePath = getBasePath();
-  const cleanPath = path.startsWith('/') ? path : `/images/${path}`;
-  return `${basePath}${cleanPath}`;
+  return getAssetPath(`images/${path}`);
+};
+
+/**
+ * Utility function specifically for media paths (audio, video, pdfs)
+ */
+export const getMediaPath = (path: string): string => {
+  return getAssetPath(`media/${path}`);
 };
 
 export const getPdfPath = (path: string): string => {

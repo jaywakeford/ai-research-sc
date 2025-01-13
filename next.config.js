@@ -1,7 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
-  basePath: '',  // Remove basePath for local development
+  basePath: process.env.NODE_ENV === 'production' ? '/ai-research-sc' : '',
+  assetPrefix: process.env.NODE_ENV === 'production' ? '/ai-research-sc' : '',
   images: {
     unoptimized: true,
   },
