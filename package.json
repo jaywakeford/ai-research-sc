@@ -4,10 +4,10 @@
   "private": true,
   "homepage": "https://jaywakeford.github.io/ai-research-sc",
   "scripts": {
-    "dev": "next dev", // Run the development server
-    "build": "next build", // Build the application for production
-    "start": "next start", // Start the production server
-    "lint": "next lint" // Run the linter to check for issues
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start", 
+    "lint": "next lint" 
   },
   "dependencies": {
     "@react-pdf/renderer": "3.1.14",
