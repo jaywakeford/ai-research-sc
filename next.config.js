@@ -1,11 +1,13 @@
 /** @type {import('next').NextConfig} */
+const isProd = process.env.NODE_ENV === 'production'; // Detect environment
+
 const nextConfig = {
   output: 'export',
-  basePath: process.env.NEXT_PUBLIC_BASE_PATH || '',
-  assetPrefix: process.env.NEXT_PUBLIC_BASE_PATH || '',
+  basePath: isProd ? process.env.NEXT_PUBLIC_BASE_PATH || '/ai-research-sc-analytics' : '',
+  assetPrefix: isProd ? process.env.NEXT_PUBLIC_BASE_PATH || '/ai-research-sc-analytics' : '',
   trailingSlash: true, // Ensures consistent routing for static sites
   images: {
-    unoptimized: true, // Required for Cloudflare Pages
+    unoptimized: true, // Required for Cloudflare Pages and static exports
   },
   webpack: (config) => {
     // Optimize media file handling
