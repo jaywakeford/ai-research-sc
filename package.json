@@ -2,10 +2,9 @@
   "name": "ai-research-sc",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://jaywakeford.github.io/ai-research-sc",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && next export",
     "start": "next start",
     "lint": "next lint"
   },
