@@ -1,13 +1,11 @@
 /** @type {import('next').NextConfig} */
-const isProd = process.env.NODE_ENV === 'production'; // Detect environment
-
 const nextConfig = {
   output: 'export',
-  basePath: isProd ? process.env.NEXT_PUBLIC_BASE_PATH || '/ai-research-sc-analytics' : '',
-  assetPrefix: isProd ? process.env.NEXT_PUBLIC_BASE_PATH || '/ai-research-sc-analytics' : '',
-  trailingSlash: true, // Ensures consistent routing for static sites
+  basePath: '/ai-research-sc-analytics', // Ensure basePath is set correctly
+  assetPrefix: '/ai-research-sc-analytics', // Align assetPrefix with basePath
+  trailingSlash: true, // Ensures consistent routing for static exports
   images: {
-    unoptimized: true, // Required for Cloudflare Pages and static exports
+    unoptimized: true, // Required for static exports and Cloudflare Pages
   },
   webpack: (config) => {
     // Optimize media file handling
@@ -42,13 +40,11 @@ const nextConfig = {
 
     return config;
   },
-  // Disable type checking during build for faster builds
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: true, // Disable type-checking for faster builds
   },
-  // Disable ESLint during builds for faster builds
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: true, // Disable linting during builds for faster builds
   },
 };
 
