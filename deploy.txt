@@ -1,0 +1,85 @@
+cd D:\Projects\ai_research_sc_analytics
+
+
+Open terminal as admin and run:
+
+wsl -l -v
+
+wsl -d Ubuntu-22.04
+
+wsl --status
+
+
+
+this will start wsl on your windows machine
+
+then start docker
+
+
+
+
+Install fly.io opensource by going to windows powershell
+
+enter this :
+
+powershell -Command "iwr https://fly.io/install.ps1 -useb | iex"
+
+
+then run :
+
+flyctl launch
+
+
+choose N for no when it prompts 
+
+
+flyctl deploy
+
+
+flyctl open
+
+or visit 
+
+https://ai-research-sc.fly.dev
+
+for logs :
+
+
+flyctl logs
+
+
+
+additionally can SSH into the machine to see if there are other errors present that dont show up on logs  :
+
+flyctl ssh console
+
+
+
+2.  
+
+Steps to Deploy
+
+Build the Docker Image Locally
+
+
+docker build -t ai-research-sc .
+
+Run the Container Locally
+
+
+docker run -p 3000:3000 ai-research-sc
+
+
+Test Locally
+Open http://localhost:3000 in your browser to verify that the application serves correctly.
+
+Deploy to Fly.io Redeploy the application using flyctl:
+
+
+flyctl deploy
+
+
+
+test locallay :
+
+npx serve out -l 3000
