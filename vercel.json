@@ -3,5 +3,20 @@
   "devCommand": "next dev",
   "installCommand": "npm install",
   "framework": null,
-  "outputDirectory": "out"
+  "outputDirectory": "out",
+  "headers": [
+    {
+      "source": "/media/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        }
+      ]
+    }
+  ]
 } 

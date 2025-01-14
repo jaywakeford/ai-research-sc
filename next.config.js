@@ -5,6 +5,7 @@ const nextConfig = {
     unoptimized: true,
   },
   trailingSlash: true,
+  assetPrefix: '',
   webpack: (config, { isServer }) => {
     // Disable Node.js polyfills
     config.resolve.fallback = {
@@ -28,6 +29,15 @@ const nextConfig = {
       type: 'asset/resource',
       generator: {
         filename: 'static/[hash][ext][query]',
+      },
+    });
+
+    // Handle PDF files
+    config.module.rules.push({
+      test: /\.pdf$/,
+      type: 'asset/resource',
+      generator: {
+        filename: 'media/pdfs/[name][ext]',
       },
     });
 

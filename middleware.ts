@@ -36,6 +36,7 @@ export function middleware(request: NextRequest) {
     response.headers.set('Content-Type', 'application/pdf');
     response.headers.set('Accept-Ranges', 'bytes');
     response.headers.set('Cache-Control', 'public, max-age=31536000, immutable');
+    response.headers.set('Content-Disposition', 'inline');
   } else if (ext === 'mp3') {
     response.headers.set('Content-Type', 'audio/mpeg');
     response.headers.set('Accept-Ranges', 'bytes');
