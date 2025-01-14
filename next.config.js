@@ -41,6 +41,15 @@ const nextConfig = {
       },
     });
 
+    // Handle PNG files
+    config.module.rules.push({
+      test: /\.png$/,
+      type: 'asset/resource',
+      generator: {
+        filename: 'media/pdfs-png/[name][ext]',
+      },
+    });
+
     return config;
   },
   // Disable type checking and ESLint during build for speed
