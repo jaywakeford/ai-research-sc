@@ -8,8 +8,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "clean": "rimraf .next out",
-    "build": "rimraf .next out && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -37,7 +36,6 @@
     "eslint": "8.56.0",
     "eslint-config-next": "14.0.4",
     "null-loader": "^4.0.1",
-    "rimraf": "^6.0.1",
     "typescript": "5.3.3"
   }
 }
