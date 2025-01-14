@@ -5,6 +5,35 @@ import { HeroSection, ImageCard } from '@/components/core';
 import { MetricsSection } from '@/components/sections';
 import { AudioPlayer } from '@/components/media';
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
+
+const PdfViewer = dynamic(() => import('@/components/media/PdfViewer'), {
+  ssr: false,
+  loading: () => <div>Loading PDF viewer...</div>
+});
+
+const pdfPreviews = [
+  {
+    title: "Power BI Analytics Development",
+    pdfUrl: "/media/pdfs/powerbi-analytics-development-a.pdf",
+    totalPages: 4
+  },
+  {
+    title: "Agents Research",
+    pdfUrl: "/media/pdfs/agents-research-b.pdf",
+    totalPages: 3
+  },
+  {
+    title: "Open Interpreter",
+    pdfUrl: "/media/pdfs/open-interpreter-c.pdf",
+    totalPages: 5
+  },
+  {
+    title: "Independent ML Learning Model",
+    pdfUrl: "/media/pdfs/independent-ml-learning-model-d.pdf",
+    totalPages: 6
+  }
+];
 
 export default function Home() {
   return (
@@ -158,6 +187,22 @@ export default function Home() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="w-full py-12 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-8">Research & Development</h2>
+          <div className="grid grid-cols-1 gap-8">
+            {pdfPreviews.map((pdf) => (
+              <PdfViewer
+                key={pdf.pdfUrl}
+                title={pdf.title}
+                pdfUrl={pdf.pdfUrl}
+                totalPages={pdf.totalPages}
+              />
+            ))}
           </div>
         </div>
       </section>

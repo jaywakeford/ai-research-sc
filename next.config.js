@@ -5,33 +5,41 @@ const nextConfig = {
     unoptimized: true,
   },
   trailingSlash: true,
-  webpack: (config) => {
-    // Handle canvas and other Node.js dependencies
+  webpack: (config, { isServer }) => {
+    // Disable Node.js polyfills
     config.resolve.fallback = {
       ...config.resolve.fallback,
-      canvas: false,
-      encoding: false,
       fs: false,
       path: false,
       os: false,
+      canvas: false,
+      encoding: false,
     };
 
-    // Exclude PDF.js worker from being processed
+    // Skip .node files
+    config.module.rules.push({
+      test: /\.node$/,
+      use: 'null-loader',
+    });
+
+    // Handle PDF.js worker
     config.module.rules.push({
       test: /pdf\.worker\.(min\.)?js/,
       type: 'asset/resource',
+      generator: {
+        filename: 'static/[hash][ext][query]',
+      },
     });
 
     return config;
   },
-  // Disable type checking during build for speed
+  // Disable type checking and ESLint during build for speed
   typescript: {
     ignoreBuildErrors: true,
   },
-  // Disable ESLint during build for speed
   eslint: {
     ignoreDuringBuilds: true,
-  }
-}
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

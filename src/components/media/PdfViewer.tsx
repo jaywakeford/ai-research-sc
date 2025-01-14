@@ -1,88 +1,163 @@
-'use client';
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 
 // Initialize PDF.js worker
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
-
-const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
-  const [numPages, setNumPages] = useState<number>(0);
-  const [pageNumber, setPageNumber] = useState<number>(1);
-  const [error, setError] = useState<string | null>(null);
-
-  function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
-    setNumPages(numPages);
-    setPageNumber(1);
-    setError(null);
-  }
-
-  function onDocumentLoadError(err: Error): void {
-    console.error('Error loading PDF:', err, 'URL:', pdfUrl);
-    setError(`Error loading PDF: ${err.message}. Please check the file path and try again.`);
-  }
-
-  function changePage(offset: number) {
-    setPageNumber(prevPageNumber => {
-      const newPageNumber = prevPageNumber + offset;
-      return Math.min(Math.max(1, newPageNumber), numPages);
-    });
-  }
-
-  return (
-    <div className="flex flex-col h-full">
-      <div className="flex justify-between items-center mb-4 p-2 bg-gray-800 rounded-lg">
-        <div className="flex items-center space-x-2">
-          <button
-            onClick={() => changePage(-1)}
-            disabled={pageNumber <= 1}
-            className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            Previous
-          </button>
-          <button
-            onClick={() => changePage(1)}
-            disabled={pageNumber >= numPages}
-            className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            Next
-          </button>
-          <span className="text-white">
-            Page {pageNumber} of {numPages}
-          </span>
-        </div>
-      </div>
-      <div className="flex-1 overflow-auto bg-gray-900 rounded-lg flex justify-center">
-        {error ? (
-          <div className="text-red-500 flex flex-col items-center justify-center p-4 text-center">
-            <div>{error}</div>
-            <div className="mt-2">Attempted URL: {pdfUrl}</div>
-          </div>
-        ) : (
-          <Document
-            file={pdfUrl}
-            onLoadSuccess={onDocumentLoadSuccess}
-            onLoadError={onDocumentLoadError}
-            loading={<div className="text-white p-4">Loading PDF...</div>}
-            error={<div className="text-red-500 p-4">Failed to load PDF. Please try again.</div>}
-          >
-            <Page
-              pageNumber={pageNumber}
-              className="max-w-full"
-              loading={<div className="text-white p-4">Loading page...</div>}
-              error={<div className="text-red-500 p-4">Failed to load page. Please try again.</div>}
-            />
-          </Document>
-        )}
-      </div>
-    </div>
-  );
-};
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js`;
 
 interface PdfViewerProps {
   pdfUrl: string;
+  title: string;
+  totalPages: number;
 }
+
+// Create a Map to store page numbers for each PDF URL
+const pdfPageNumbers = new Map<string, number>();
+
+const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl, title, totalPages }) => {
+  // Initialize page number from the Map or default to 1
+  const [pageNumber, setPageNumber] = useState(() => pdfPageNumbers.get(pdfUrl) || 1);
+  const [numPages, setNumPages] = useState(totalPages);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Update the Map whenever page number changes
+  useEffect(() => {
+    pdfPageNumbers.set(pdfUrl, pageNumber);
+  }, [pageNumber, pdfUrl]);
+
+  // Reset state when PDF changes
+  useEffect(() => {
+    const savedPage = pdfPageNumbers.get(pdfUrl) || 1;
+    setPageNumber(savedPage);
+    setNumPages(totalPages);
+    setError(null);
+    setIsLoading(true);
+    console.log(`Initializing PDF viewer for: ${title}`);
+  }, [title, totalPages, pdfUrl]);
+
+  function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
+    console.log(`Successfully loaded PDF: ${title} with ${numPages} pages`);
+    setNumPages(numPages);
+    setIsLoading(false);
+    setError(null);
+  }
+
+  function onDocumentLoadError(error: Error) {
+    console.error(`Error loading PDF ${title}:`, error);
+    setError(`Failed to load PDF: ${error.message}`);
+    setIsLoading(false);
+  }
+
+  function onPageLoadError(error: Error) {
+    console.error(`Error loading page ${pageNumber} of ${title}:`, error);
+    setError(`Failed to load page ${pageNumber}: ${error.message}`);
+  }
+
+  const handlePageChange = (newPage: number) => {
+    setPageNumber(newPage);
+    pdfPageNumbers.set(pdfUrl, newPage);
+  };
+
+  return (
+    <div className="flex flex-col items-center w-full max-w-2xl mx-auto p-4 bg-white rounded-lg shadow-lg">
+      <h2 className="text-xl font-bold mb-4">{title}</h2>
+      
+      {error ? (
+        <div className="text-red-500 p-4 bg-red-50 rounded">
+          <p className="font-bold">Error:</p>
+          <p>{error}</p>
+          <p className="mt-2 text-sm">PDF URL: {pdfUrl}</p>
+        </div>
+      ) : (
+        <>
+          <div className="relative w-full">
+            <div className="w-full overflow-hidden min-h-[600px] flex items-center justify-center bg-gray-50">
+              <Document
+                file={pdfUrl}
+                onLoadSuccess={onDocumentLoadSuccess}
+                onLoadError={onDocumentLoadError}
+                loading={
+                  <div className="text-center p-4">
+                    <p>Loading PDF...</p>
+                    <p className="text-sm text-gray-500">{title}</p>
+                  </div>
+                }
+                error={
+                  <div className="text-red-500 p-4">
+                    <p>Failed to load PDF. Please try again.</p>
+                  </div>
+                }
+              >
+                <Page 
+                  key={`${pdfUrl}_page_${pageNumber}`}
+                  pageNumber={pageNumber} 
+                  width={600}
+                  renderTextLayer={false}
+                  renderAnnotationLayer={false}
+                  onLoadError={onPageLoadError}
+                  loading={
+                    <div className="text-center p-4">
+                      <p>Loading page {pageNumber}...</p>
+                    </div>
+                  }
+                  error={
+                    <div className="text-red-500 p-4">
+                      <p>Failed to load page {pageNumber}. Please try again.</p>
+                    </div>
+                  }
+                />
+              </Document>
+            </div>
+
+            {/* Navigation buttons overlaid on the sides */}
+            <div className="absolute inset-0 pointer-events-none flex items-center justify-between px-4">
+              <button
+                onClick={() => handlePageChange(Math.max(1, pageNumber - 1))}
+                disabled={pageNumber <= 1}
+                className={`pointer-events-auto p-2 rounded-full ${
+                  pageNumber <= 1 
+                    ? 'bg-gray-300 cursor-not-allowed' 
+                    : 'bg-blue-500 hover:bg-blue-600 text-white'
+                }`}
+                style={{ transform: 'translateX(-50%)' }}
+              >
+                ←
+              </button>
+              <button
+                onClick={() => handlePageChange(Math.min(numPages, pageNumber + 1))}
+                disabled={pageNumber >= numPages}
+                className={`pointer-events-auto p-2 rounded-full ${
+                  pageNumber >= numPages 
+                    ? 'bg-gray-300 cursor-not-allowed' 
+                    : 'bg-blue-500 hover:bg-blue-600 text-white'
+                }`}
+                style={{ transform: 'translateX(50%)' }}
+              >
+                →
+              </button>
+            </div>
+          </div>
+          
+          {/* Page counter and download link */}
+          <div className="flex flex-col items-center gap-4 mt-4">
+            <p className="text-center">
+              Page {pageNumber} of {numPages}
+            </p>
+            
+            <a 
+              href={pdfUrl} 
+              download
+              className="text-blue-500 hover:text-blue-600 underline"
+            >
+              Download PDF
+            </a>
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
 
 export default PdfViewer; 
