@@ -3,5 +3,5 @@
   "devCommand": "next dev",
   "installCommand": "npm install",
   "framework": null,
-  "outputDirectory": ".next"
+  "outputDirectory": "out"
 } 
