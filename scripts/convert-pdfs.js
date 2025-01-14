@@ -1,34 +1,24 @@
 const fs = require('fs');
 const path = require('path');
-const { PDFDocument } = require('pdf-lib');
-const { createCanvas } = require('canvas');
+const { fromPath } = require('pdf2pic');
+const sharp = require('sharp');
 
 const INPUT_DIR = path.join(process.cwd(), 'public/media/pdfs');
 const OUTPUT_DIR = path.join(process.cwd(), 'public/media/pdfs-png');
 
 async function convertPDFToPNG(pdfPath, outputPath) {
   try {
-    // Read the PDF file
-    const pdfBytes = fs.readFileSync(pdfPath);
-    const pdfDoc = await PDFDocument.load(pdfBytes);
-    const page = await pdfDoc.getPage(0);
+    const options = {
+      density: 300,
+      saveFilename: path.basename(pdfPath, '.pdf'),
+      savePath: OUTPUT_DIR,
+      format: "png",
+      width: 2048,
+      height: 2048
+    };
 
-    // Get page dimensions
-    const { width, height } = page.getSize();
-    const scale = 2; // Increase resolution
-
-    // Create canvas with the same dimensions
-    const canvas = createCanvas(width * scale, height * scale);
-    const ctx = canvas.getContext('2d');
-
-    // Draw white background
-    ctx.fillStyle = 'white';
-    ctx.fillRect(0, 0, width * scale, height * scale);
-
-    // Convert to PNG
-    const buffer = canvas.toBuffer('image/png');
-    fs.writeFileSync(outputPath, buffer);
-
+    const convert = fromPath(pdfPath, options);
+    await convert(1); // Convert first page only
     console.log(`Converted ${path.basename(pdfPath)} to PNG`);
   } catch (error) {
     console.error(`Error converting ${path.basename(pdfPath)}:`, error);
