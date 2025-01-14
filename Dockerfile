@@ -1,18 +1,28 @@
-# Use an official Node.js image
+# Use an official Node.js runtime as the base image
 FROM node:18-alpine
 
 # Set working directory
 WORKDIR /app
 
+# Copy package files
+COPY package*.json ./
+
 # Install dependencies
-COPY package.json package-lock.json ./
 RUN npm install
 
-# Copy the app source code
+# Copy the rest of the application
 COPY . .
 
-# Expose the port for Fly.io
-EXPOSE 8080
+# Set environment variables for production
+ENV NODE_ENV=production
+ENV NEXT_PUBLIC_BASE_PATH=""
 
-# Start the application with explicitly resolved PORT
-CMD ["sh", "-c", "npm run start -- -H 0.0.0.0 -p ${PORT:-8080}"]
+# Build the application
+RUN npm run build
+
+# The static files will be in the /app/out directory
+# Expose the port that will serve the static files
+EXPOSE 3000
+
+# Start the static file server
+CMD ["npm", "run", "start"]

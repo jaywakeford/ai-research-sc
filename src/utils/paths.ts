@@ -3,8 +3,8 @@
  */
 export const getMediaPath = (path: string): string => {
   // Remove any leading slashes and clean the path
-  const cleanPath = path.replace(/^\/+/, '');
-  return `/${cleanPath}`;
+  const cleanPath = path.replace(/^\/+/, '').replace(/^media\/+/, '');
+  return `/media/${cleanPath}`;
 };
 
 export const getImagePath = (path: string): string => {
@@ -14,8 +14,11 @@ export const getImagePath = (path: string): string => {
 };
 
 export const getPdfPath = (path: string): string => {
-  // Remove any leading slashes and clean the path
-  const cleanPath = path.replace(/^\/+/, '').replace(/^media\/pdfs\/+/, '');
+  const cleanPath = path
+    .replace(/^\/+/, '')
+    .replace(/^media\/pdfs\/+/, '')
+    .replace(/^pdfs\/+/, '')
+    .replace(/^public\/media\/pdfs\/+/, '');
   return `/media/pdfs/${cleanPath}`;
 };
 

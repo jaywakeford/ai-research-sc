@@ -1,17 +1,29 @@
-# Ignore unnecessary directories and files
+# Dependencies
 node_modules
-.next/cache
+.pnp
+.pnp.js
+
+# Testing
+coverage
+
+# Next.js
+.next/
+out/
+
+# Production
+build
+
+# Misc
 .DS_Store
+*.pem
 
-# Ignore local environment and config files
-.env.local
-.env.development
-.env.test
-
-# Include .env.production if you're using it, or inject the variables via Fly.io secrets
-!.env.production
-
-# Ignore build-time logs and temporary files
+# Debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Local env files
+.env*.local
+
+# Include production env
+!.env.production

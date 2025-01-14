@@ -5,18 +5,23 @@ const nextConfig = {
     unoptimized: true,
   },
   trailingSlash: true,
-  basePath: process.env.NEXT_PUBLIC_BASE_PATH || '',
-  assetPrefix: process.env.NEXT_PUBLIC_BASE_PATH || '',
-  // Webpack config for PDF.js worker
   webpack: (config) => {
-    config.resolve.alias.canvas = false;
+    // Handle canvas and other Node.js dependencies
     config.resolve.fallback = {
       ...config.resolve.fallback,
       canvas: false,
+      encoding: false,
       fs: false,
       path: false,
       os: false,
     };
+
+    // Exclude PDF.js worker from being processed
+    config.module.rules.push({
+      test: /pdf\.worker\.(min\.)?js/,
+      type: 'asset/resource',
+    });
+
     return config;
   },
   // Disable type checking during build for speed
@@ -26,7 +31,7 @@ const nextConfig = {
   // Disable ESLint during build for speed
   eslint: {
     ignoreDuringBuilds: true,
-  },
+  }
 }
 
 module.exports = nextConfig
