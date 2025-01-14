@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "buildCommand": "NODE_ENV=production next build",
-  "devCommand": "next dev",
   "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
   "outputDirectory": "out"
 } 
