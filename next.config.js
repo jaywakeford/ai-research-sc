@@ -6,6 +6,7 @@ const nextConfig = {
   },
   trailingSlash: true,
   assetPrefix: '',
+  distDir: '.next',
   webpack: (config, { isServer }) => {
     // Disable Node.js polyfills
     config.resolve.fallback = {
@@ -23,30 +24,12 @@ const nextConfig = {
       use: 'null-loader',
     });
 
-    // Handle PDF.js worker
-    config.module.rules.push({
-      test: /pdf\.worker\.(min\.)?js/,
-      type: 'asset/resource',
-      generator: {
-        filename: 'static/[hash][ext][query]',
-      },
-    });
-
     // Handle PDF files
     config.module.rules.push({
       test: /\.pdf$/,
       type: 'asset/resource',
       generator: {
-        filename: 'media/pdfs/[name][ext]',
-      },
-    });
-
-    // Handle PNG files
-    config.module.rules.push({
-      test: /\.png$/,
-      type: 'asset/resource',
-      generator: {
-        filename: 'media/pdfs-png/[name][ext]',
+        filename: 'static/media/[name][ext]',
       },
     });
 

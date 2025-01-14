@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Document, Page, pdfjs } from 'react-pdf';
+import React, { useState } from 'react';
+import { Document, Page } from 'react-pdf';
+import { pdfjs } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 
 // Initialize PDF.js worker
-if (typeof window !== 'undefined') {
-  pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
-}
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 interface PdfViewerProps {
   pdfUrl: string;
@@ -17,32 +16,28 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl, title }) => {
   const [numPages, setNumPages] = useState<number>(1);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
 
-  function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
+  const handleDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
     setNumPages(numPages);
-    setIsLoading(false);
-    setError(null);
-  }
+  };
 
-  function onDocumentLoadError(error: Error) {
+  const handleDocumentLoadError = (error: Error) => {
     console.error('Error loading PDF:', error);
     setError(`Failed to load PDF: ${error.message}`);
-    setIsLoading(false);
-  }
+  };
 
   const handlePrevPage = () => {
-    setPageNumber(prev => Math.max(1, prev - 1));
+    setPageNumber((prev) => Math.max(1, prev - 1));
   };
 
   const handleNextPage = () => {
-    setPageNumber(prev => Math.min(numPages, prev + 1));
+    setPageNumber((prev) => Math.min(numPages, prev + 1));
   };
 
   return (
     <div className="flex flex-col items-center w-full max-w-2xl mx-auto p-4 bg-white rounded-lg shadow-lg">
       {title && <h2 className="text-xl font-bold mb-4">{title}</h2>}
-      
+
       {error ? (
         <div className="text-red-500 p-4 bg-red-50 rounded">
           <p className="font-bold">Error:</p>
@@ -54,9 +49,14 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl, title }) => {
           <div className="w-full overflow-hidden min-h-[600px] flex items-center justify-center bg-gray-50">
             <Document
               file={pdfUrl}
-              onLoadSuccess={onDocumentLoadSuccess}
-              onLoadError={onDocumentLoadError}
+              onLoadSuccess={handleDocumentLoadSuccess}
+              onLoadError={handleDocumentLoadError}
               loading={<div>Loading PDF...</div>}
+              error={<div>Error loading PDF.</div>}
+              options={{
+                cMapUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/cmaps/',
+                cMapPacked: true,
+              }}
             >
               <Page
                 pageNumber={pageNumber}
@@ -64,6 +64,7 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl, title }) => {
                 renderTextLayer={false}
                 renderAnnotationLayer={false}
                 loading={<div>Loading page {pageNumber}...</div>}
+                error={<div>Error loading page {pageNumber}.</div>}
               />
             </Document>
           </div>
@@ -99,8 +100,8 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl, title }) => {
 
           {/* Download link */}
           <div className="flex justify-center mt-4">
-            <a 
-              href={pdfUrl} 
+            <a
+              href={pdfUrl}
               download
               className="text-blue-500 hover:text-blue-600 underline"
             >
