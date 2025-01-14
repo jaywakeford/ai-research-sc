@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # AI Research and Supply Chain Analytics Platform
 
 A comprehensive web application showcasing research papers, analytics implementations, and supply chain management solutions. Built with Next.js and modern web technologies.
@@ -71,14 +70,11 @@ npm run start
 ## Contributing
 
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+1. Create your feature branch (`git checkout -b feature/amazing-feature`)
+1. Commit your changes (`git commit -m 'Add some amazing feature'`)
+1. Push to the branch (`git push origin feature/amazing-feature`)
+1. Open a Pull Request
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
-=======
-# ai-research-sc
->>>>>>> 8294bebc2a74245651f1be38dad19bd71e0e38f1
+This project is licensed under the MIT License - see the LICENSE file for details
