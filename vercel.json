@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "next build && next export",
+  "buildCommand": "NODE_ENV=production next build",
   "devCommand": "next dev",
   "framework": "nextjs",
   "outputDirectory": "out"
