@@ -8,8 +8,8 @@
   },
   "scripts": {
     "dev": "next dev",
-    "clean": "rm -rf .next out || true",
-    "build": "next build",
+    "clean": "rimraf .next out",
+    "build": "rimraf .next out && next build",
     "start": "next start",
     "lint": "next lint"
   },
